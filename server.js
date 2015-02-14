@@ -7,7 +7,8 @@ var file = new(static.Server)();
 // rely on our instance of node-static to serve the files
 var app = http.createServer(function (req, res) {
 	file.serve(req, res);
-}).listen(8181, '54.225.206.186');
+}).listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'));
 
 // Use socket.io JavaScript library for real-time web applications
 var io = require('socket.io').listen(app);
