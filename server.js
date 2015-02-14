@@ -7,7 +7,7 @@ var file = new(static.Server)();
 // rely on our instance of node-static to serve the files
 var app = http.createServer(function (req, res) {
 	file.serve(req, res);
-}).listen(80, 'https://webrtc-drone.herokuapp.com');
+}).listen(8181, '54.225.206.186');
 
 // Use socket.io JavaScript library for real-time web applications
 var io = require('socket.io').listen(app);
