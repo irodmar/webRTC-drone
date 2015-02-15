@@ -8,7 +8,16 @@ var file = new(static.Server)();
 // We use the http module’s createServer function and
 // rely on our instance of node-static to serve the files
 var app = http.createServer(function (req, res) {
-	res.setHeader("Access-Control-Allow-Origin", "https://webrtc-drone.herokuapp.com/");
+	// Set CORS headers
+	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Request-Method', '*');
+	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+	res.setHeader('Access-Control-Allow-Headers', '*');
+	if ( req.method === 'OPTIONS' ) {
+		res.writeHead(200);
+		res.end();
+		return;
+	}
 	file.serve(req, res);
 }).listen(PORT);
 
