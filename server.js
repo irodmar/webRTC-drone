@@ -1,12 +1,14 @@
 var static = require('node-static');
 var http = require('http');
 var PORT = process.env.PORT || 3000;
+
 // Create a node-static server instance
 var file = new(static.Server)();
 
 // We use the http module’s createServer function and
 // rely on our instance of node-static to serve the files
 var app = http.createServer(function (req, res) {
+	res.setHeader("Access-Control-Allow-Origin", "https://webrtc-drone.herokuapp.com/");
 	file.serve(req, res);
 }).listen(PORT);
 
