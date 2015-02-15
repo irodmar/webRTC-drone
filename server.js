@@ -1,6 +1,7 @@
 var static = require('node-static');
 var http = require('http');
 var PORT = process.env.PORT || 3000;
+console.log(PORT);
 
 // Create a node-static server instance
 var file = new(static.Server)();
@@ -37,6 +38,7 @@ io.sockets.on('connection', function (socket){
 	// Handle 'create or join' messages
 	socket.on('create or join', function (room) {
 		var numClients = io.sockets.clients(room).length;
+
 
 		log('S --> Room ' + room + ' has ' + numClients + ' client(s)');
 		log('S --> Request to create or join room', room);

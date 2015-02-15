@@ -55,7 +55,7 @@ var sdpConstraints = {};
 var room = prompt('Enter room name:');
 
 // Connect to signaling server
-var socket = io.connect("https://localhost");
+var socket = io.connect("https://webrtc-drone.herokuapp.com/");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {
