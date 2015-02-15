@@ -55,8 +55,7 @@ var sdpConstraints = {};
 var room = prompt('Enter room name:');
 
 // Connect to signaling server
-var PORT = process.env.PORT || 3000;
-var socket = io.connect("https://localhost:PORT");
+var socket = io.connect("https://localhost:80");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {
