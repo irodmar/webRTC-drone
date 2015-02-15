@@ -9,7 +9,7 @@ var file = new(static.Server)();
 // rely on our instance of node-static to serve the files
 var app = http.createServer(function (req, res) {
 	// Set CORS headers
-	res.setHeader('Access-Control-Allow-Origin', '*');
+	res.setHeader('Access-Control-Allow-Origin', 'https://webrtc-drone.herokuapp.com/');
 	res.setHeader('Access-Control-Request-Method', '*');
 	res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
 	res.setHeader('Access-Control-Allow-Headers', '*');
