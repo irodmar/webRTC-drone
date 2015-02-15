@@ -1,5 +1,6 @@
 var static = require('node-static');
 var http = require('http');
+var PORT = process.env.PORT || 3000;
 // Create a node-static server instance
 var file = new(static.Server)();
 
@@ -7,8 +8,7 @@ var file = new(static.Server)();
 // rely on our instance of node-static to serve the files
 var app = http.createServer(function (req, res) {
 	file.serve(req, res);
-}).listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'));
+}).listen(PORT);
 
 // Use socket.io JavaScript library for real-time web applications
 var io = require('socket.io').listen(app);
