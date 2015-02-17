@@ -40,7 +40,9 @@ var remoteStream;
 var pc;
 
 // PeerConnection ICE protocol configuration (either Firefox or Chrome)
-var pc_config = {'iceServers': [{urls: "stun:stun.services.mozilla.com"}]};
+var pc_config = webrtcDetectedBrowser === 'firefox' ?
+	{'iceServers':[{'url':'stun:23.21.150.121'}]} : // IP address
+	{'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
 
 var pc_constraints = {
 	'optional': [
