@@ -40,9 +40,26 @@ var remoteStream;
 var pc;
 
 // PeerConnection ICE protocol configuration (either Firefox or Chrome)
-var pc_config = webrtcDetectedBrowser === 'firefox' ?
-	{'iceServers':[{'url':'stun:23.21.150.121'}]} : // IP address
-	{'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
+var pc_config = {
+  'iceServers': [
+    {
+      'url': 'stun:stun.l.google.com:19302'
+    },
+    {
+      'url': 'stun:23.21.150.121'
+    },
+    {
+      'url': 'turn:192.158.29.39:3478?transport=udp',
+      'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      'username': '28224511:1379330808'
+    },
+    {
+      'url': 'turn:192.158.29.39:3478?transport=tcp',
+      'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
+      'username': '28224511:1379330808'
+    }
+  ]
+};
 
 var pc_constraints = {
 	'optional': [
