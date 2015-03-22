@@ -5,7 +5,7 @@
 var room = prompt('Introduce el nombre de la nueva sala:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("http://10.10.49.22:3000");
+var socket = io.connect("https://webrtc-drone.herokuapp.com");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {
