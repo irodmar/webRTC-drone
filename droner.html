@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  	<link rel="stylesheet" href="Proyecto.css">
+	<title>Droner - PFG Iván Rodríguez - WebRTC on a Drone</title>
+</head>
+
+<body>
+
+<div id='mainDiv'>
+
+	<table width="100%">
+		<tr id = 'titulos'>
+			<th>
+				Local video
+			</th>
+		</tr>
+
+	<table border="2" width="100%">
+
+		<tr id = 'videos' align="center" width="100%">
+			<td>
+				<video id="localVideo" autoplay controls></video>
+			</td>
+		</tr>
+
+	</table>
+</div>
+
+<script src='/socket.io/socket.io.js'></script>
+<script src='js/socketioDroner.js'></script>
+<script src='js/webRTCDroner.js'></script>
+
+</body>
+</html>

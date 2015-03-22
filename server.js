@@ -30,7 +30,7 @@ io.sockets.on('connection', function (socket){
 
 	// Handle 'message' messages
 	socket.on('message', function (message) {
-	log('S --> got message: ', message);
+	log('Server --> got message: ', message);
 	// channel-only broadcast...
 	socket.broadcast.to(message.channel).emit('message', message);
 });
@@ -40,19 +40,19 @@ io.sockets.on('connection', function (socket){
 		var numClients = io.sockets.clients(room).length;
 
 
-		log('S --> Room ' + room + ' has ' + numClients + ' client(s)');
-		log('S --> Request to create or join room', room);
+		log('Server --> Room ' + room + ' has ' + numClients + ' client(s)');
+		log('Server --> Request to create or join room', room);
 
 		// First client joining...
 		if (numClients == 0){
 			socket.join(room);
 			socket.emit('created', room);
-		} else if (numClients == 1) {
+		} else if (numClients > 0) {
 		// Second client joining...
 			io.sockets.in(room).emit('join', room);
 			socket.join(room);
 			socket.emit('joined', room);
-		} else { // max two clients
+		} else { // max 5 clients
 			socket.emit('full', room);
 		}
 	});
