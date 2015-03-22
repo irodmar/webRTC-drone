@@ -3,7 +3,7 @@ var http = require('http');
 var PORT = process.env.PORT || 3000;
 console.log(PORT);
 
-
+// Variables con el ID para el envio de los mensajes
 var dronerID;
 var newPeer;
 
@@ -36,9 +36,10 @@ io.sockets.on('connection', function (socket){
 	// Handle 'message' messages
 	socket.on('message', function (message) {
 		log('Server --> got message: ', message);
-		// channel-only broadcast...
+		// Si el que envia es Droner hay que mandar al otro peer
 		if (socket.id == dronerID) {
 			io.sockets.socket(newPeer).emit('message', message);
+		// Si el que envia es un peer hay que mandarselo al watcher
 		} else if (socket.id== newPeer) {
 			io.sockets.socket(dronerID).emit('message', message);
 		} 
