@@ -1,7 +1,7 @@
 // about:webrtc
 
 var localStream; // stream local de video + audio
-var PeerConnection; // 
+//var PeerConnection; // 
 
 navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
@@ -21,6 +21,9 @@ function handleUserMedia(stream){
 	}
 	console.log('Adding local stream.');
 	// Envio un mensaje al servidor como ack de exito al llamar gerUserMedia()
+	
+	
+	
 }
 
 function handleUserMediaError(error){
@@ -77,8 +80,50 @@ console.log('RTCPeerConnection object: ' + RTCPeerConnection);
 // Creaamos PeerConnection
 function createPeerConnection(){
 	console.log('llamamos a createpeerconection');
+	
+		// Funciones de peer connection
+
+	function handleIceCandidate(event){
+		console.log('handleIceCandidate event: ', event);
+		if (event.candidate) {
+			sendMessage({
+			type: 'candidate',
+			label: event.candidate.sdpMLineIndex,
+			id: event.candidate.sdpMid,
+			candidate: event.candidate.candidate});
+		} else {
+			console.log('End of candidates.');
+		}
+			// console.log('Local ICE candidate: \n' + event.candidate.candidate);
+		
+	}
+	
+	
+	
+	function gotLocalDescription(sessionDescription){
+		PeerConnection.setLocalDescription(sessionDescription, successLocalSDP, errorLocalSDP);
+		sendMessage(sessionDescription);
+		// Creamos y añadomos al PeerConnection el SDP local y se lo enviamos al peer
+	}
+	
+	function successLocalSDP(){
+		console.log('Exito al crear y enviar SDP local');
+	}
+	
+	function errorLocalSDP(error){
+		console.log('Error al crear el SDP: ' + error);
+	}
+	
+	function onSignalingError(error){
+		console.log('Fallo al crear el SDP: ' + error);	
+	}
+	
+	
+	
+	
+	
 	try{
-		PeerConnection = new RTCPeerConnection(ICE_config, pc_constraints);
+		var PeerConnection = new RTCPeerConnection(ICE_config, pc_constraints);
 		//console.log('PeerConnection creada con:\n'+ 
 		//	' config: \'' + JSON.stringify(ICE_config) + '\';\n' + 
 		//	' constrainsts: \'' + JSON.stringify(pc_constraints) + '\'.');
@@ -86,43 +131,36 @@ function createPeerConnection(){
 		console.log('Añadido stream a PeerConnection');
 		PeerConnection.onicecandidate = handleIceCandidate; // Manejador ICE local (manda ICE local a remoto)
 		console.log('Creando Oferta...');	
-		PeerConnection.createOffer(gotLocalDescription, onSignalingError);		
+		PeerConnection.createOffer(gotLocalDescription, onSignalingError);
+		
+		
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		socket.on('message', function (message){
+		console.log('Received message:', message);
+		if (message.type === 'answer') {
+			PeerConnection.setRemoteDescription(new RTCPSessionDescription(message));
+		} else if (message.type === 'candidate') {
+			var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
+				candidate:message.candidate});
+			PeerConnection.addIceCandidate(candidate);
+		}
+});
 		
 	} catch(e){
 		console.log('Fallo al crear PeerConnection, excepcion: ' + e.message);
 	}
-}
-function handleIceCandidate(event){
-	console.log('handleIceCandidate event: ', event);
-	if (event.candidate) {
-		sendMessage({
-		type: 'candidate',
-		label: event.candidate.sdpMLineIndex,
-		id: event.candidate.sdpMid,
-		candidate: event.candidate.candidate});
-	} else {
-		console.log('End of candidates.');
-	}
-		// console.log('Local ICE candidate: \n' + event.candidate.candidate);
-	
-}
-
-
-
-function gotLocalDescription(sessionDescription){
-	PeerConnection.setLocalDescription(sessionDescription, successLocalSDP, errorLocalSDP);
-	sendMessage(sessionDescription);
-	// Creamos y añadomos al PeerConnection el SDP local y se lo enviamos al peer
-}
-
-function successLocalSDP(){
-	console.log('Exito al crear y enviar SDP local');
-}
-
-function errorLocalSDP(error){
-	console.log('Error al crear el SDP: ' + error);
-}
-
-function onSignalingError(error){
-	console.log('Fallo al crear el SDP: ' + error);	
 }

@@ -25,16 +25,16 @@ socket.on('join', function (room){
 });
 
 
-socket.on('message', function (message){
-	console.log('Received message:', message);
-	if (message.type === 'answer') {
-		PeerConnection.setRemoteDescription(new RTCPSessionDescription(message));
-	} else if (message.type === 'candidate') {
-		var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
-			candidate:message.candidate});
-		PeerConnection.addIceCandidate(candidate);
-	}
-});
+//socket.on('message', function (message){
+//	console.log('Received message:', message);
+//	if (message.type === 'answer') {
+//		PeerConnection.setRemoteDescription(new RTCPSessionDescription(message));
+//	} else if (message.type === 'candidate') {
+//		var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
+//			candidate:message.candidate});
+//		PeerConnection.addIceCandidate(candidate);
+//	}
+//});
 
 
 
