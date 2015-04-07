@@ -5,12 +5,12 @@
 var room = prompt('Introduce el nombre de la nueva sala:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("https://webrtc-drone.herokuapp.com");
+var socket = io.connect("10.10.48.76");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {
-	console.log('Create or join room', room);
-	socket.emit('create or join', room);
+	console.log('Create room', room);
+	socket.emit('create', room);
 }
 
 // Recibimos respuesta del servidor de sala creada y llamamos a getUserMedia
@@ -19,11 +19,15 @@ socket.on('created', function (room){
 	callGetUserMedia();
 });
 
-socket.on('join', function (room){
-	console.log('Otro peer ha hecho una peticion de unirse a la sala ' + room);
-	createPeerConnection();
+socket.on('join watcher', function (room){
+	console.log('Un "watcher" se ha unido a la sala ' + room);
+	createPeerConnection(false);
 });
 
+socket.on('join remote', function (room){
+	console.log('Un "remote" se ha unido a la sala ' + room);
+	createPeerConnection(true);
+});
 
 //socket.on('message', function (message){
 //	console.log('Received message:', message);

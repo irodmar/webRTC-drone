@@ -8,6 +8,9 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 var localVideo = document.querySelector('#localVideo'); // 
 var constraints = {video: true, audio: true};
 
+// Variable para dataChannel
+var dataChannel;
+var receiveTextarea = document.getElementById("dataChannelReceive");
 
 function handleUserMedia(stream){
 	localStream = stream;
@@ -62,7 +65,7 @@ var ICE_config = {
 
 var pc_constraints = {
 	'optional': [
-	{'DtlsSrtpKeyAgreement': true}
+	{'RtpDataChannels': true}
 ]};
 
 /////////////////////// Definimos RTCPeerConnection
@@ -78,10 +81,10 @@ if (navigator.webkitGetUserMedia){
 console.log('RTCPeerConnection object: ' + RTCPeerConnection);
 
 // Creaamos PeerConnection
-function createPeerConnection(){
+function createPeerConnection(isRemote){
 	console.log('llamamos a createpeerconection');
 	
-		// Funciones de peer connection
+		// ********* Funciones de peer connection
 
 	function handleIceCandidate(event){
 		console.log('handleIceCandidate event: ', event);
@@ -120,32 +123,44 @@ function createPeerConnection(){
 	
 	
 	
+	// ******* Funciones del DataChannel ********
 	
+	function handleMessage(event) {
+		console.log('Received message: ' + event.data);
+		receiveTextarea.value += event.data + '\n';
+	}
+	
+	function handleReceiveChannelStateChange() {
+		var readyState = dataChannel.readyState;
+		console.log('Send channel state is: ' + readyState);
+	}	
 	
 	try{
 		var PeerConnection = new RTCPeerConnection(ICE_config, pc_constraints);
-		//console.log('PeerConnection creada con:\n'+ 
-		//	' config: \'' + JSON.stringify(ICE_config) + '\';\n' + 
-		//	' constrainsts: \'' + JSON.stringify(pc_constraints) + '\'.');
+		
+		// Creamos el dataChannel si es un remote
+		if (isRemote) {		
+			try {
+				// Create a reliable data channel
+				dataChannel = PeerConnection.createDataChannel("droneDataChannel", {reliable:false, maxRetransmits: 10});
+				dataChannel.onerror = function (error) {
+					console.log("Data Channel Error:", error);
+				};
+				dataChannel.onopen = handleReceiveChannelStateChange;
+				dataChannel.onmessage = handleMessage;
+				dataChannel.onclose = handleReceiveChannelStateChange;
+				console.log('*********************^^^^^^ ^Created datachannel');
+			} catch (e) {
+				console.log('createDataChannel() failed with exception: ' + e.message);
+			}
+		}
+		
+		
 		PeerConnection.addStream(localStream); // Añadimos localStream a PeerConnection
 		console.log('Añadido stream a PeerConnection');
 		PeerConnection.onicecandidate = handleIceCandidate; // Manejador ICE local (manda ICE local a remoto)
 		console.log('Creando Oferta...');	
 		PeerConnection.createOffer(gotLocalDescription, onSignalingError);
-		
-		
-		
-
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 		
@@ -157,7 +172,8 @@ function createPeerConnection(){
 			var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
 				candidate:message.candidate});
 			PeerConnection.addIceCandidate(candidate);
-		}
+		}		
+		
 });
 		
 	} catch(e){

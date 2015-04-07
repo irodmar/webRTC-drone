@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   	<link rel="stylesheet" href="Proyecto.css">
-	<title>Whatcher - PFG Iván Rodríguez - WebRTC on a Drone</title>
+	<title>Remote - PFG Iván Rodríguez - WebRTC on a Drone</title>
 </head>
 
 <body>
@@ -24,14 +24,25 @@
 				<video id="droneVideo" autoplay controls></video>
 			</td>
 		</tr>
-
+	</table>
+	<table border="4" width="60%" align="center">
+		
+		<tr  id = 'chat' >
+			<td>
+				Enviar Data
+			</td>
+			<td align="center">
+				<textarea rows="4" cols="60" id="dataChannelSend" disabled></textarea>
+				<button id="sendButton" disabled>Send</button>
+			</td>
+		</tr>
 	</table>
 </div>
 
 
 <script src='/socket.io/socket.io.js'></script>
-<script src='js/socketioWatcher.js'></script>
-<script src='js/webRTCWatcher.js'></script>
+<script src='js/socketioRemote.js'></script>
+<script src='js/webRTCRemote.js'></script>
 
 </body>
 </html>

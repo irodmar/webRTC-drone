@@ -10,8 +10,8 @@ var socket = io.connect("10.10.48.76");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {
-	console.log('Join watcher to: ', room);
-	socket.emit('join watcher', room);
+	console.log('Join remote to: ', room);
+	socket.emit('join remote', room);
 }
 
 socket.on('joined', function (room){
