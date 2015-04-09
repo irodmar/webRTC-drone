@@ -37,6 +37,18 @@
 		</tr>
 	</table>
 </div>
+<table border="3" align="center">
+	<tr>
+		<td>
+			<label for=fader align=center> Fader </laber>
+			<input type=range min=0 max=100 value=50 id="fader" orient="vertical" class=vertical oninput="sendFader(value)"  disabled>
+			<output for=fader id=val> 50 </output>
+		</td>
+		<td>
+			<button id="button" align="right" disabled>Button</button>
+		</td>
+	</tr>
+</table>
 
 <script src='/socket.io/socket.io.js'></script>
 <script src='js/socketioDroner.js'></script>

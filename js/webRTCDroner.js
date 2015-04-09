@@ -11,6 +11,8 @@ var constraints = {video: true, audio: true};
 // Variable para dataChannel
 var dataChannel;
 var receiveTextarea = document.getElementById("dataChannelReceive");
+var fader = document.getElementById("fader");
+
 
 function handleUserMedia(stream){
 	localStream = stream;
@@ -127,11 +129,18 @@ function createPeerConnection(isRemote){
 	
 	function handleMessage(event) {
 		console.log('Received message: ' + event.data);
-		receiveTextarea.value += event.data + '\n';
+		var data = event.data.split(' ');
+		if (data[0] == "fader") {			
+			fader.value = data[1];
+			document.querySelector('#val').value = data[1];
+		} else{
+			receiveTextarea.value += event.data + '\n';
+		}
 	}
 	
 	function handleReceiveChannelStateChange() {
 		var readyState = dataChannel.readyState;
+		fader.disabled = false;
 		console.log('Send channel state is: ' + readyState);
 	}	
 	
@@ -150,6 +159,12 @@ function createPeerConnection(isRemote){
 				dataChannel.onmessage = handleMessage;
 				dataChannel.onclose = handleReceiveChannelStateChange;
 				console.log('*********************^^^^^^ ^Created datachannel');
+				// Check for the various File API support.
+				if (window.File && window.FileReader && window.FileList && window.Blob) {
+					console.log('Great success! All the File APIs are supported.');
+				} else {
+					alert('The File APIs are not fully supported in this browser.');
+				}
 			} catch (e) {
 				console.log('createDataChannel() failed with exception: ' + e.message);
 			}

@@ -25,20 +25,19 @@
 			</td>
 		</tr>
 	</table>
-	<table border="4" width="60%" align="center">
-		
-		<tr  id = 'chat' >
-			<td>
-				Enviar Data
-			</td>
-			<td align="center">
-				<textarea rows="4" cols="60" id="dataChannelSend" disabled></textarea>
-				<button id="sendButton" disabled>Send</button>
-			</td>
-		</tr>
-	</table>
-</div>
 
+<table border="3" align="center">
+	<tr>
+		<td>
+			<label for=fader align=center> Fader </laber>
+			<input type=range min=0 max=100 value=50 id=fader orient="vertical" class=vertical oninput="sendFader(value)"  disabled>
+			<output for=fader id=val> 50 </output>
+		</td>
+		<td>
+			<button id="button" align="right" disabled>Button</button>
+		</td>
+	</tr>
+</table>
 
 <script src='/socket.io/socket.io.js'></script>
 <script src='js/socketioRemote.js'></script>

@@ -8,8 +8,10 @@ var remoteVideo = document.querySelector('#droneVideo'); //
 // Variable para dataChannel
 var dataChannel;
 var sendTextarea = document.getElementById("dataChannelSend");
-var sendButton = document.getElementById("sendButton");
-sendButton.onclick = sendData;
+var fader = document.getElementById("fader");
+var boton = document.getElementById("button");
+
+boton.onclick = sendBoton;
 // PeerConnection
 ///////////////// VARIABLES PARA PEERCONNECTION
 var ICE_config = {
@@ -95,23 +97,27 @@ function handleSendChannelStateChange() {
 	console.log('Receive channel state is: ' + readyState);
 	// If channel ready, enable user's input
 	if (readyState == "open") {
-		dataChannelSend.disabled = false;
-		dataChannelSend.focus();
-		dataChannelSend.placeholder = "";
+		fader.disabled = false;
+		boton.disabled = false;
 		sendButton.disabled = false;
 	} else {
 		dataChannelSend.disabled = true;
 		sendButton.disabled = true;
 	}
 }
-
-
-
-function sendData() {
-	var data = sendTextarea.value;
-	dataChannel.send(data);
-	console.log('Sent data: ' + data);
+// enviamos cuando se mueve el fader
+function sendFader(value) {
+	dataChannel.send("fader " + value);
+	document.querySelector('#val').value = value;
+	console.log('Sent data: ' + value);
 }
+
+// enviamos cuando se mueve el fader
+function sendBoton() {
+	dataChannel.send("Boton ");
+	console.log('Sent Boton');
+}
+
 
 function handleIceCandidate(event){
 	console.log('handleIceCandidate event: ', event);
