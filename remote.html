@@ -8,7 +8,7 @@
 
 <body>
 
-<div id='mainDiv'>
+<div float=left>
 
 	<table width="100%">
 		<tr id = 'titulos'>
@@ -25,19 +25,49 @@
 			</td>
 		</tr>
 	</table>
+	
+	<table border="3" align="center">
+		<tr id = 'titulos'>
+			<th>
+				Enviar
+			</th>
+		</tr>
+	</table>
+	
+	<table border="3" align="center">
+		<tr>
+			<td>
+				<label for=fader align=center> Fader </laber>
+				<input type=range min=0 max=100 value=50 id=fader orient="vertical" class=vertical oninput="sendFader(value)"  disabled>
+				<output for=fader id=val> 50 </output>
+			</td>
+			<td>
+				<canvas id="button" width="120" height="120" disabled=true style="border: 1px solid gray;">
+				   Tu navegador no soporta canvas. Actualizalo
+				</canvas>		</td>
+		</tr>
+	</table>
+</div>
 
-<table border="3" align="center">
-	<tr>
-		<td>
-			<label for=fader align=center> Fader </laber>
-			<input type=range min=0 max=100 value=50 id=fader orient="vertical" class=vertical oninput="sendFader(value)"  disabled>
-			<output for=fader id=val> 50 </output>
-		</td>
-		<td>
-			<button id="button" align="right" disabled>Button</button>
-		</td>
-	</tr>
-</table>
+<div float=left>
+	<table border="3" align="center">
+		<tr id = 'titulos'>
+			<th>
+				Recibido
+			</th>
+		</tr>
+	</table>
+	<table border="3" align="center">
+		<tr>
+			<td>
+				<output id=fileOutput>Aqui recibo el valor del archivo</output>
+			</td>
+		</tr>
+	</table>
+	
+</div>
+
+
 
 <script src='/socket.io/socket.io.js'></script>
 <script src='js/socketioRemote.js'></script>

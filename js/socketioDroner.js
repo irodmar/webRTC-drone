@@ -29,24 +29,6 @@ socket.on('join remote', function (room){
 	createPeerConnection(true);
 });
 
-//socket.on('message', function (message){
-//	console.log('Received message:', message);
-//	if (message.type === 'answer') {
-//		PeerConnection.setRemoteDescription(new RTCPSessionDescription(message));
-//	} else if (message.type === 'candidate') {
-//		var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
-//			candidate:message.candidate});
-//		PeerConnection.addIceCandidate(candidate);
-//	}
-//});
-
-
-
-
-
-
-
-
 
 function sendMessage(message){
 	console.log('Enviando mensaje: ', message);

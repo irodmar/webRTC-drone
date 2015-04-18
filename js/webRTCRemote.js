@@ -7,11 +7,20 @@ var remoteVideo = document.querySelector('#droneVideo'); //
 
 // Variable para dataChannel
 var dataChannel;
-var sendTextarea = document.getElementById("dataChannelSend");
 var fader = document.getElementById("fader");
-var boton = document.getElementById("button");
 
-boton.onclick = sendBoton;
+
+var boton = document.getElementById("button");
+boton.disabled = true;
+// CANVAS circulo
+var cxt=boton.getContext("2d");
+cxt.fillStyle ="red";
+cxt.beginPath();
+cxt.arc(60,60,50,0,Math.PI*2,true);
+cxt.closePath();
+cxt.fill();
+
+
 // PeerConnection
 ///////////////// VARIABLES PARA PEERCONNECTION
 var ICE_config = {
@@ -71,15 +80,13 @@ function createPeerConnection(remoteSDP){
 		PeerConnection.onicecandidate = handleIceCandidate; // Manejador ICE local (manda ICE local a remoto)
 		console.log('Creando Oferta...');
                 // handler del Data Channel creadop por el droner
-                console.log('****************************llamado datachannel');
-		
 	} catch(e){
 		console.log('Fallo al crear PeerConnection, excepcion: ' + e.message);
 	}
 }
 
 function gotReceiveChannel(event) {
-	console.log('&&&&&&&&&&&&&&&&&&&&&6     Receive Channel Callback');
+	console.log('Receive Channel Callback');
 	dataChannel = event.channel;
 	dataChannel.onmessage = handleMessage;
 	dataChannel.onopen = handleSendChannelStateChange;
@@ -88,7 +95,7 @@ function gotReceiveChannel(event) {
 
 function handleMessage(event) {
 	console.log('Received message: ' + event.data);
-	receiveTextarea.value += event.data + '\n';
+	document.getElementById('fileOutput').value = event.data;
 }
 
 
@@ -99,10 +106,7 @@ function handleSendChannelStateChange() {
 	if (readyState == "open") {
 		fader.disabled = false;
 		boton.disabled = false;
-		sendButton.disabled = false;
-	} else {
-		dataChannelSend.disabled = true;
-		sendButton.disabled = true;
+		boton.onclick = sendBoton;//pongo el onclick aqui
 	}
 }
 // enviamos cuando se mueve el fader
@@ -114,7 +118,15 @@ function sendFader(value) {
 
 // enviamos cuando se mueve el fader
 function sendBoton() {
-	dataChannel.send("Boton ");
+	if (cxt.fillStyle == "#ff0000") { //Si el color es rojo cambialo a verde y mandalo
+		cxt.fillStyle = "green";
+		cxt.fill();
+		dataChannel.send("Boton " + cxt.fillStyle);
+	} else{
+		cxt.fillStyle = "red";
+		cxt.fill();
+		dataChannel.send("Boton " + cxt.fillStyle);
+	}
 	console.log('Sent Boton');
 }
 

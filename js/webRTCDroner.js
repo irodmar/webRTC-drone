@@ -10,8 +10,44 @@ var constraints = {video: true, audio: true};
 
 // Variable para dataChannel
 var dataChannel;
-var receiveTextarea = document.getElementById("dataChannelReceive");
 var fader = document.getElementById("fader");
+
+
+
+// CANVAS circulo
+
+var c=document.getElementById("circulo");
+var cxt=c.getContext("2d");
+
+cxt.fillStyle ="red";
+cxt.beginPath();
+cxt.arc(60,60,50,0,Math.PI*2,true);
+cxt.closePath();
+cxt.fill();
+
+
+// Lectura y envio del archivo .txt
+var sendFileButton = document.getElementById("fileInput");
+var file;
+function readFiles(files) {
+	file = files[0];
+	var intervalo = setInterval("readFileAndSend()", 3000);
+}
+
+// enviamos cada setInterval el valor del archivo
+function sendFile(value) {
+	dataChannel.send(value);
+	console.log('Sent File: ' + value);
+}
+
+
+function readFileAndSend(){
+	var reader = new FileReader();
+	reader.onload = function (e) {
+		sendFile(e.target.result);
+	};
+	reader.readAsText(file);
+}
 
 
 function handleUserMedia(stream){
@@ -134,13 +170,15 @@ function createPeerConnection(isRemote){
 			fader.value = data[1];
 			document.querySelector('#val').value = data[1];
 		} else{
-			receiveTextarea.value += event.data + '\n';
+			cxt.fillStyle = data[1];
+			cxt.fill();
 		}
 	}
 	
 	function handleReceiveChannelStateChange() {
 		var readyState = dataChannel.readyState;
 		fader.disabled = false;
+		sendFileButton.disabled = false;
 		console.log('Send channel state is: ' + readyState);
 	}	
 	

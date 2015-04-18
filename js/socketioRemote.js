@@ -34,22 +34,6 @@ socket.on('message', function (message){
 });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 function sendMessage(message){
 	console.log('Enviando mensaje: ', message);
 	socket.emit('message', message);

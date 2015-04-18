@@ -25,30 +25,46 @@
 			</td>
 		</tr>
 	</table>
-	<table border="4" width="60%" align="center">
-		
-		<tr  id = 'chat' >
+	<table border="3" align="center">
+		<tr id = 'titulos'>
+			<th>
+				Recibido
+			</th>
+		</tr>
+	</table>
+	<table border="3" align="center">
+		<tr>
 			<td>
-				Data recibida
+				<label for=fader align=center> Fader </laber>
+				<input type=range min=0 max=100 value=50 id="fader" orient="vertical" class=vertical oninput="sendFader(value)"  disabled>
+				<output for=fader id=val> 50 </output>
 			</td>
-			<td align="center">
-				<textarea rows="4" cols="60" id="dataChannelReceive" disabled></textarea>
+			<td>
+				<canvas id="circulo" width="120" height="120" style="border: 1px solid gray;">
+				   Tu navegador no soporta canvas. Actualizalo
+				</canvas>
 			</td>
 		</tr>
 	</table>
 </div>
-<table border="3" align="center">
-	<tr>
-		<td>
-			<label for=fader align=center> Fader </laber>
-			<input type=range min=0 max=100 value=50 id="fader" orient="vertical" class=vertical oninput="sendFader(value)"  disabled>
-			<output for=fader id=val> 50 </output>
-		</td>
-		<td>
-			<button id="button" align="right" disabled>Button</button>
-		</td>
-	</tr>
-</table>
+<div>
+	<table border="3" align="center">
+		<tr id = 'titulos'>
+			<th>
+				Enviar
+			</th>
+		</tr>
+	</table>
+	<table border="3" align="center">
+		<tr>
+			<td>
+				<input id="fileInput" type="file" size="50" disabled onchange="readFiles(this.files)">
+			</td>
+		</tr>
+	</table>
+	
+</div>
+
 
 <script src='/socket.io/socket.io.js'></script>
 <script src='js/socketioDroner.js'></script>
