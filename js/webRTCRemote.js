@@ -116,7 +116,7 @@ function sendFader(value) {
 	console.log('Sent data: ' + value);
 }
 
-// enviamos cuando se mueve el fader
+// enviamos cuando se pulsa el boton
 function sendBoton() {
 	if (cxt.fillStyle == "#ff0000") { //Si el color es rojo cambialo a verde y mandalo
 		cxt.fillStyle = "green";

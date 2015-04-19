@@ -29,9 +29,9 @@ cxt.fill();
 // Lectura y envio del archivo .txt
 var sendFileButton = document.getElementById("fileInput");
 var file;
-function readFiles(files) {
+function readFiles(files) { // Funcion llamada cuando el usuario selecciona un archivo
 	file = files[0];
-	var intervalo = setInterval("readFileAndSend()", 3000);
+	var intervalo = setInterval("readFileAndSend()", 3000); // Leemos y enviamos el archivo cada 3 segundos
 }
 
 // enviamos cada setInterval el valor del archivo
@@ -196,13 +196,7 @@ function createPeerConnection(isRemote){
 				dataChannel.onopen = handleReceiveChannelStateChange;
 				dataChannel.onmessage = handleMessage;
 				dataChannel.onclose = handleReceiveChannelStateChange;
-				console.log('*********************^^^^^^ ^Created datachannel');
-				// Check for the various File API support.
-				if (window.File && window.FileReader && window.FileList && window.Blob) {
-					console.log('Great success! All the File APIs are supported.');
-				} else {
-					alert('The File APIs are not fully supported in this browser.');
-				}
+				console.log('Created datachannel');
 			} catch (e) {
 				console.log('createDataChannel() failed with exception: ' + e.message);
 			}
