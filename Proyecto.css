@@ -14,5 +14,4 @@ body{
 #chat{
        background-color: #cfcfc4;
 }
-
-		
+input.vertical { -webkit-appearance: slider-vertical; writing-mode: bt-lr; };
