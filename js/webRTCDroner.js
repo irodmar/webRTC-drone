@@ -61,10 +61,7 @@ function handleUserMedia(stream){
 		localVideo.src = stream;
 	}
 	console.log('Adding local stream.');
-	// Envio un mensaje al servidor como ack de exito al llamar gerUserMedia()
-	
-	
-	
+	// Envio un mensaje al servidor como ack de exito al llamar gerUserMedia()	
 }
 
 function handleUserMediaError(error){
