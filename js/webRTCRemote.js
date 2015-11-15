@@ -50,35 +50,42 @@ var pc_constraints = {
 ]};
 
 /////////////////////// Definimos RTCPeerConnection
+RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || 
+                       window.webkitRTCPeerConnection || window.msRTCPeerConnection;
+RTCPSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription ||
+                       window.webkitRTCSessionDescription || window.msRTCSessionDescription;
+RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
+                        window.webkitRTCIceCandidate || window.msRTCIceCandidate;
 // Chrome
-if (navigator.webkitGetUserMedia){
-	RTCPeerConnection = webkitRTCPeerConnection;
+//if (navigator.webkitGetUserMedia){
+	//RTCPeerConnection = webkitRTCPeerConnection;
+
 // Firerox
-} else if (navigator.mozGetUserMedia) {
-	RTCPeerConnection = mozRTCPeerConnection;
-	RTCPSessionDescription = mozRTCSessionDescription;
-	RTCIceCandidate = mozRTCIceCandidate;
-}
+//} else if (navigator.mozGetUserMedia) {
+//	RTCPeerConnection = mozRTCPeerConnection;
+	//RTCPSessionDescription = mozRTCSessionDescription;
+	//RTCIceCandidate = mozRTCIceCandidate;
+//}
 console.log('RTCPeerConnection object: ' + RTCPeerConnection);
 
 // Creaamos PeerConnection
 function createPeerConnection(remoteSDP){
 	console.log('llamamos a createpeerconection');
-
+    console.log(remoteSDP);
 
 	try{
 		PeerConnection = new RTCPeerConnection(ICE_config, pc_constraints);
-                PeerConnection.ondatachannel = gotReceiveChannel;
+            PeerConnection.ondatachannel = gotReceiveChannel;
 
-		//console.log('PeerConnection creada con:\n'+ 
-		//	' config: \'' + JSON.stringify(ICE_config) + '\';\n' + 
-		//	' constrainsts: \'' + JSON.stringify(pc_constraints) + '\'.');
-		//PeerConnection.addStream(localStream); //No necesito añadir localStream a PeerConnection
-                PeerConnection.setRemoteDescription(new RTCPSessionDescription(remoteSDP));
-		PeerConnection.createAnswer(gotLocalDescription, onSignalingError);
-                PeerConnection.onaddstream = handleRemoteStreamAdded;
-		PeerConnection.onicecandidate = handleIceCandidate; // Manejador ICE local (manda ICE local a remoto)
-		console.log('Creando Oferta...');
+            //console.log('PeerConnection creada con:\n'+ 
+            //	' config: \'' + JSON.stringify(ICE_config) + '\';\n' + 
+            //	' constrainsts: \'' + JSON.stringify(pc_constraints) + '\'.');
+            //PeerConnection.addStream(localStream); //No necesito añadir localStream a PeerConnection
+            PeerConnection.setRemoteDescription(new RTCPSessionDescription(remoteSDP));
+            PeerConnection.createAnswer(gotLocalDescription, onSignalingError);
+            PeerConnection.onaddstream = handleRemoteStreamAdded;
+            PeerConnection.onicecandidate = handleIceCandidate; // Manejador ICE local (manda ICE local a remoto)
+            console.log('Creando Oferta...');
                 // handler del Data Channel creadop por el droner
 	} catch(e){
 		console.log('Fallo al crear PeerConnection, excepcion: ' + e.message);
@@ -152,7 +159,7 @@ function handleRemoteStreamAdded(event) {
 	} else{
 		remoteVideo.src = event.stream;
 	}
-        console.log('Remote stream attached!!.');
+    console.log('Remote stream attached!!.');
 	remoteStream = event.stream;
 }
 

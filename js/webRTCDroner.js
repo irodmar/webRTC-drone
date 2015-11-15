@@ -61,10 +61,7 @@ function handleUserMedia(stream){
 		localVideo.src = stream;
 	}
 	console.log('Adding local stream.');
-	// Envio un mensaje al servidor como ack de exito al llamar gerUserMedia()
-	
-	
-	
+	// Envio un mensaje al servidor como ack de exito al llamar gerUserMedia()	
 }
 
 function handleUserMediaError(error){
@@ -83,18 +80,18 @@ function callGetUserMedia(){
 var ICE_config = {
   'iceServers': [
     {
-      'url': 'stun:stun.l.google.com:19302'
+      'urls': 'stun:stun.l.google.com:19302'
     },
     {
-      'url': 'stun:23.21.150.121'
+      'urls': 'stun:23.21.150.121'
     },
     {
-      'url': 'turn:192.158.29.39:3478?transport=udp',
+      'urls': 'turn:192.158.29.39:3478?transport=udp',
       'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
       'username': '28224511:1379330808'
     },
     {
-      'url': 'turn:192.158.29.39:3478?transport=tcp',
+      'urls': 'turn:192.158.29.39:3478?transport=tcp',
       'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
       'username': '28224511:1379330808'
     }
@@ -107,15 +104,21 @@ var pc_constraints = {
 ]};
 
 /////////////////////// Definimos RTCPeerConnection
+RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || 
+                       window.webkitRTCPeerConnection || window.msRTCPeerConnection;
+RTCPSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription ||
+                       window.webkitRTCSessionDescription || window.msRTCSessionDescription;
+RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
+                        window.webkitRTCIceCandidate || window.msRTCIceCandidate;
 // Chrome
-if (navigator.webkitGetUserMedia){
-	RTCPeerConnection = webkitRTCPeerConnection;
+//if (navigator.webkitGetUserMedia){
+//	RTCPeerConnection = webkitRTCPeerConnection;
 // Firerox
-} else if (navigator.mozGetUserMedia) {
-	RTCPeerConnection = mozRTCPeerConnection;
-	RTCPSessionDescription = mozRTCSessionDescription;
-	RTCIceCandidate = mozRTCIceCandidate;
-}
+//} else if (navigator.mozGetUserMedia) {
+//	RTCPeerConnection = mozRTCPeerConnection;
+//	RTCPSessionDescription = mozRTCSessionDescription;
+//	RTCIceCandidate = mozRTCIceCandidate;
+//}
 console.log('RTCPeerConnection object: ' + RTCPeerConnection);
 
 // Creaamos PeerConnection
