@@ -2,21 +2,14 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  	<link rel="stylesheet" href="Proyecto.css">
+  	<link rel="stylesheet" href="css/Proyecto.css">
+	<link rel="stylesheet" type="text/css" href="css/flightindicators.css">
+
 	<title>Remote - PFG Iván Rodríguez - WebRTC on a Drone</title>
 </head>
 
 <body>
 
-<div float=left>
-
-	<table width="100%">
-		<tr id = 'titulos'>
-			<th>
-				Video del Drone
-			</th>
-		</tr>
-	</table>
 	<table border="2" width="100%">
 
 		<tr id = 'videos' align="center" width="100%">
@@ -26,52 +19,30 @@
 		</tr>
 	</table>
 	
-	<table border="3" align="center">
-		<tr id = 'titulos'>
-			<th>
-				Enviar
-			</th>
-		</tr>
-	</table>
+
 	
-	<table border="3" align="center">
-		<tr>
-			<td>
-				<label for=fader align=center> Fader </laber>
-				<input type=range min=0 max=100 value=50 id=fader orient="vertical" class=vertical oninput="sendFader(value)"  disabled>
-				<output for=fader id=val> 50 </output>
-			</td>
-			<td>
-				<canvas id="button" width="120" height="120" disabled=true style="border: 1px solid gray;">
-				   Tu navegador no soporta canvas. Actualizalo
-				</canvas>		</td>
-		</tr>
-	</table>
-</div>
-
-<div float=left>
-	<table border="3" align="center">
-		<tr id = 'titulos'>
-			<th>
-				Recibido
-			</th>
-		</tr>
-	</table>
-	<table border="3" align="center">
-		<tr>
-			<td>
-				<output id=fileOutput>Aqui recibo el valor del archivo</output>
-			</td>
-		</tr>
-	</table>
-	
-</div>
 
 
+<section>
+<span id="attitude"></span>
+<span id="altimeter"></span>
+<span id="turn_coordinator"></span>
+<span id="heading"></span>
+</section>
+
+<button id = takeoff onclick = enviarOrden("takeoff")>Take Off</button>        
+<button id = landing onclick = enviarOrden("land")>Landing</button>
+
+<canvas id='leftJoystick' width=150 height=150>Su navegador no soporta canvas :( </canvas>
+<canvas id=rightJoystick width=150 height=150>Su navegador no soporta canvas :( </canvas>
 
 <script src='/socket.io/socket.io.js'></script>
 <script src='js/socketioRemote.js'></script>
 <script src='js/webRTCRemote.js'></script>
+<script src="js/jquery-2.1.4.min.js"></script>
+<script src="js/jquery.flightindicators.js"></script>
+<script type="text/javascript" src="js/droneSensors.js"></script>
+<script src= js/joysticks.js></script>
 
 </body>
 </html>

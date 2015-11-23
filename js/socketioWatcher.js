@@ -6,7 +6,7 @@
 var room = prompt('Introduce el nombre de la sala a la que te quieres unir:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("192.168.1.10");
+var socket = io.connect("10.10.49.28");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {

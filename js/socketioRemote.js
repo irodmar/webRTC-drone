@@ -1,12 +1,15 @@
 // Archivo que se encarga de la comunicacion con el servidor de señalozacion y llama a las funciones necesarias de webRTC
 // del watcher
 
+// instruments
+var panelControl;
+var intervalo = null;
 
 // Pedimos nombre de la sala
 var room = prompt('Introduce el nombre de la sala a la que te quieres unir:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("192.168.1.10");
+var socket = io.connect("192.168.1.8");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {
@@ -16,7 +19,9 @@ if (room !== '') {
 
 socket.on('joined', function (room){
 	console.log('This peer has joined room ' + room);
-	// Call getUserMedia()	
+	panelControl = new panelControl();
+	leftJoystick();
+	rightJoystick();
 });
 
 

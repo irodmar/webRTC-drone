@@ -7,18 +7,50 @@ var remoteVideo = document.querySelector('#droneVideo'); //
 
 // Variable para dataChannel
 var dataChannel;
-var fader = document.getElementById("fader");
 
 
-var boton = document.getElementById("button");
-boton.disabled = true;
-// CANVAS circulo
-var cxt=boton.getContext("2d");
-cxt.fillStyle ="red";
-cxt.beginPath();
-cxt.arc(60,60,50,0,Math.PI*2,true);
-cxt.closePath();
-cxt.fill();
+function getYaw(qw,qx,qy,qz) {                     
+        var rotateZa0=2.0*(qx*qy + qw*qz);
+        var rotateZa1=qw*qw + qx*qx - qy*qy - qz*qz;
+        var rotateZ=0.0;
+        if(rotateZa0 != 0.0 && rotateZa1 != 0.0){
+            rotateZ=Math.atan2(rotateZa0,rotateZa1);
+        }
+        return rotateZ*180/Math.PI ;
+}
+
+function getRoll(qw,qx,qy,qz){
+        rotateXa0=2.0*(qy*qz + qw*qx);
+        rotateXa1=qw*qw - qx*qx - qy*qy + qz*qz;
+        rotateX=0.0;
+        
+        if(rotateXa0 != 0.0 && rotateXa1 !=0.0){
+            rotateX=Math.atan2(rotateXa0, rotateXa1)
+        }   
+        return rotateX*180/Math.PI;
+}
+function getPitch(qw,qx,qy,qz){
+        rotateYa0=-2.0*(qx*qz - qw*qy);
+        rotateY=0.0;
+        if(rotateYa0>=1.0){
+            rotateY=math.PI/2.0;
+        } else if(rotateYa0<=-1.0){
+            rotateY=-Math.PI/2.0
+        } else {
+            rotateY=Math.asin(rotateYa0)
+        }
+        
+        return rotateY*180/Math.PI;
+}
+
+
+function updateAndShow(pose, novdata){
+        // calculate yaw, pitch, and roll
+        var yaw = getYaw(pose.q0, pose.q1, pose.q2, pose.q3);
+        var pitch = getPitch(pose.q0, pose.q1, pose.q2, pose.q3);
+        var roll = getRoll(pose.q0, pose.q1, pose.q2, pose.q3);
+        panelControl.updatePanelControl(yaw, pitch, roll, pose);
+}
 
 
 // PeerConnection
@@ -26,18 +58,18 @@ cxt.fill();
 var ICE_config = {
   'iceServers': [
     {
-      'url': 'stun:stun.l.google.com:19302'
+      'urls': 'stun:stun.l.google.com:19302'
     },
     {
-      'url': 'stun:23.21.150.121'
+      'urls': 'stun:23.21.150.121'
     },
     {
-      'url': 'turn:192.158.29.39:3478?transport=udp',
+      'urls': 'turn:192.158.29.39:3478?transport=udp',
       'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
       'username': '28224511:1379330808'
     },
     {
-      'url': 'turn:192.158.29.39:3478?transport=tcp',
+      'urls': 'turn:192.158.29.39:3478?transport=tcp',
       'credential': 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
       'username': '28224511:1379330808'
     }
@@ -76,7 +108,7 @@ function createPeerConnection(remoteSDP){
 	try{
 		PeerConnection = new RTCPeerConnection(ICE_config, pc_constraints);
             PeerConnection.ondatachannel = gotReceiveChannel;
-
+  
             //console.log('PeerConnection creada con:\n'+ 
             //	' config: \'' + JSON.stringify(ICE_config) + '\';\n' + 
             //	' constrainsts: \'' + JSON.stringify(pc_constraints) + '\'.');
@@ -100,41 +132,39 @@ function gotReceiveChannel(event) {
 	dataChannel.onclose = handleSendChannelStateChange;
 }
 
-function handleMessage(event) {
-	console.log('Received message: ' + event.data);
-	document.getElementById('fileOutput').value = event.data;
+function enviarOrden(d){
+    //console.log(d);
+    var data = {orden:d};
+    dataChannel.send(JSON.stringify(data));
 }
 
+function sendCMDVel(x, y){
+    var data = {x:x,y:y};
+    //console.log(data);
+    dataChannel.send(JSON.stringify(data));
+}
+
+function sendAltYaw(alt, yaw){
+    //console.log(d);
+    var data = {alt:alt, yaw:yaw};
+    dataChannel.send(JSON.stringify(data));
+}
+
+function handleMessage(event) {
+    //console.log('Received message: ' + event.data);
+    var data = JSON.parse(event.data);
+    var pose = data.pose;
+    var navdata = data.navdata;
+    updateAndShow(pose, navdata);
+}
 
 function handleSendChannelStateChange() {
 	var readyState = dataChannel.readyState;
 	console.log('Receive channel state is: ' + readyState);
 	// If channel ready, enable user's input
 	if (readyState == "open") {
-		fader.disabled = false;
-		boton.disabled = false;
-		boton.onclick = sendBoton;//pongo el onclick aqui
-	}
-}
-// enviamos cuando se mueve el fader
-function sendFader(value) {
-	dataChannel.send("fader " + value);
-	document.querySelector('#val').value = value;
-	console.log('Sent data: ' + value);
-}
 
-// enviamos cuando se pulsa el boton
-function sendBoton() {
-	if (cxt.fillStyle == "#ff0000") { //Si el color es rojo cambialo a verde y mandalo
-		cxt.fillStyle = "green";
-		cxt.fill();
-		dataChannel.send("Boton " + cxt.fillStyle);
-	} else{
-		cxt.fillStyle = "red";
-		cxt.fill();
-		dataChannel.send("Boton " + cxt.fillStyle);
 	}
-	console.log('Sent Boton');
 }
 
 
