@@ -2,13 +2,70 @@ body{
        background-color: #fff44f;
 }
 
+body, html {
+       width: 100%;
+       height: 100%;
+       margin: 0;
+       padding: 0;
+       overflow: hidden;
+}
+
 #titulos{
        background-color: #fff44f;
 }
 
-	
-#videos{
-       background-color: #000000;
+
+video#droneVideo { 
+       position: fixed;
+       top: 50%;
+       left: 50%;
+       min-width: 100%;
+       min-height: 100%;
+       width: auto;
+       height: auto;
+       z-index: -100;
+       -webkit-transform: translateX(-50%) translateY(-50%);
+       transform: translateX(-50%) translateY(-50%);
+       background: url(polina.jpg) no-repeat;
+       background-size: cover; 
 }
 
+
+#attitude {     
+       float: left;
+}
+
+#altimeter {     
+       float: left;
+}
+
+#turn_coordinator {     
+       float: right;
+}
+
+#heading {     
+       float: right;
+}
+
+#buttons {     
+       position: absolute;
+       bottom: 0px;
+       right: 50%;
+}
+
+
+
+
+.left {
+       position: absolute;
+       bottom: 25px;
+       left: 50px;
+}
+
+.right {
+       position: absolute;
+       bottom: 25px;
+       right: 50px;
+}
+       
 

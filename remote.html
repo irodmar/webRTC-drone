@@ -5,44 +5,57 @@
   	<link rel="stylesheet" href="css/Proyecto.css">
 	<link rel="stylesheet" type="text/css" href="css/flightindicators.css">
 
+
+	<script src='/socket.io/socket.io.js'></script>
+	<script src='js/socketioRemote.js'></script>
+	<script src='js/webRTCRemote.js'></script>
+	<script src="js/jquery-2.1.4.min.js"></script>
+	<script src="js/jquery.flightindicators.js"></script>
+	<script type="text/javascript" src="js/droneSensors.js"></script>
+	<script src= js/joysticks.js></script>
+	
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
 	<title>Remote - PFG Iván Rodríguez - WebRTC on a Drone</title>
 </head>
 
 <body>
 
-	<table border="2" width="100%">
-
-		<tr id = 'videos' align="center" width="100%">
-			<td>
-				<video id="droneVideo" autoplay controls></video>
-			</td>
-		</tr>
-	</table>
-	
+<video id="droneVideo" autoplay ></video>
 
 	
+
 
 
 <section>
-<span id="attitude"></span>
-<span id="altimeter"></span>
-<span id="turn_coordinator"></span>
-<span id="heading"></span>
+	<span id="attitude"></span>
+	<span id="altimeter"></span>
+	<span id="turn_coordinator"></span>
+	<span id="heading"></span>
 </section>
 
-<button id = takeoff onclick = enviarOrden("takeoff")>Take Off</button>        
-<button id = landing onclick = enviarOrden("land")>Landing</button>
+<div id = buttons>
+	<button id = takeoff onclick = enviarOrden("takeoff")>Take Off</button>        
+	<button id = landing onclick = enviarOrden("land")>Landing</button>
+</div>	
 
-<canvas id='leftJoystick' width=150 height=150>Su navegador no soporta canvas :( </canvas>
-<canvas id=rightJoystick width=150 height=150>Su navegador no soporta canvas :( </canvas>
+	<canvas id='leftJoystick' class = left width=150 height=150>Su navegador no soporta canvas :( </canvas>
+	<canvas id=rightJoystick class = right width=150 height=150>Su navegador no soporta canvas :( </canvas>
 
-<script src='/socket.io/socket.io.js'></script>
-<script src='js/socketioRemote.js'></script>
-<script src='js/webRTCRemote.js'></script>
-<script src="js/jquery-2.1.4.min.js"></script>
-<script src="js/jquery.flightindicators.js"></script>
-<script type="text/javascript" src="js/droneSensors.js"></script>
-<script src= js/joysticks.js></script>
+
+
+
+
+
+  <script>
+  $(function() {
+    $( "#attitude" ).draggable();
+	$( "#altimeter" ).draggable();
+	$( "#turn_coordinator" ).draggable();
+    $( "#heading" ).draggable();
+  });
+  </script>
 
 </body>
 </html>
