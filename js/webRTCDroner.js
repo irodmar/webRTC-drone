@@ -10,43 +10,16 @@ var constraints = {video: true, audio: true};
 
 // Variable para dataChannel
 var dataChannel;
+var isChannelRunning = false; 
 var fader = document.getElementById("fader");
 
 
 
-// CANVAS circulo
-
-var c=document.getElementById("circulo");
-var cxt=c.getContext("2d");
-
-cxt.fillStyle ="red";
-cxt.beginPath();
-cxt.arc(60,60,50,0,Math.PI*2,true);
-cxt.closePath();
-cxt.fill();
-
-
-// Lectura y envio del archivo .txt
-var sendFileButton = document.getElementById("fileInput");
-var file;
-function readFiles(files) { // Funcion llamada cuando el usuario selecciona un archivo
-	file = files[0];
-	var intervalo = setInterval("readFileAndSend()", 3000); // Leemos y enviamos el archivo cada 3 segundos
-}
-
 // enviamos cada setInterval el valor del archivo
-function sendFile(value) {
-	dataChannel.send(value);
-	console.log('Sent File: ' + value);
-}
-
-
-function readFileAndSend(){
-	var reader = new FileReader();
-	reader.onload = function (e) {
-		sendFile(e.target.result);
-	};
-	reader.readAsText(file);
+function sendNavigationData(pose, navdata) {
+	var s = {pose:pose, navdata:navdata};
+	dataChannel.send(JSON.stringify(s));
+	console.log("Send navigationData.");
 }
 
 
@@ -167,22 +140,32 @@ function createPeerConnection(isRemote){
 	// ******* Funciones del DataChannel ********
 	
 	function handleMessage(event) {
-		console.log('Received message: ' + event.data);
-		var data = event.data.split(' ');
-		if (data[0] == "fader") {			
-			fader.value = data[1];
-			document.querySelector('#val').value = data[1];
-		} else{
-			cxt.fillStyle = data[1];
-			cxt.fill();
+		//console.log('Received message: ' + event.data);
+		var data = JSON.parse(event.data);
+		//console.log("Data**** " + data.x + data.y);
+		if ("orden" in data) {
+			if (data.orden == "takeoff") {
+				introrobot.takeoff();
+			} else if (data.orden == "land") {
+				introrobot.land();
+			} else {
+				console.log("Orden no valida. ");
+			}
+		} else if ("x" in data) {
+			introrobot.setXYValues(data.x, data.y);
+		} else if ("alt" in data) {
+			introrobot.setAltWay(data.alt, data.yaw);
+		} else {
+			console.log("Dato invalido. ");
 		}
 	}
 	
 	function handleReceiveChannelStateChange() {
 		var readyState = dataChannel.readyState;
-		fader.disabled = false;
-		sendFileButton.disabled = false;
 		console.log('Send channel state is: ' + readyState);
+		if (readyState == closed) {
+			isChannelRunning = false;
+		}
 	}	
 	
 	try{
@@ -199,6 +182,7 @@ function createPeerConnection(isRemote){
 				dataChannel.onopen = handleReceiveChannelStateChange;
 				dataChannel.onmessage = handleMessage;
 				dataChannel.onclose = handleReceiveChannelStateChange;
+				isChannelRunning = true;
 				console.log('Created datachannel');
 			} catch (e) {
 				console.log('createDataChannel() failed with exception: ' + e.message);
