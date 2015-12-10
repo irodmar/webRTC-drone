@@ -2,8 +2,8 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  	<link rel="stylesheet" href="css/Proyecto.css">
 	<link rel="stylesheet" type="text/css" href="css/flightindicators.css">
+  	<link rel="stylesheet" href="css/Proyecto.css">
 
 
 	<script src='/socket.io/socket.io.js'></script>
@@ -24,9 +24,6 @@
 
 <video id="droneVideo" autoplay ></video>
 
-	
-
-
 
 <section>
 	<span id="attitude"></span>
@@ -45,10 +42,14 @@
 
 
 
-
-
-
   <script>
+	var remoteVideo = document.getElementById("droneVideo"); // 
+
+if (remoteVideo == null) {
+    console.log("Me cago en la puta****" + remoteVideo);
+} else {
+	console.log("Que pasa aqui***");
+}
   $(function() {
     $( "#attitude" ).draggable();
 	$( "#altimeter" ).draggable();

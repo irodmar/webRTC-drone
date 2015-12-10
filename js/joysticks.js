@@ -92,9 +92,7 @@ function rightJoystick(){
                         
                         x = X + elR * Math.cos(angulo);
                         y = Y + elR * Math.sin(angulo);
-                        
-                        //rotationChange(((x - X)/maxR)); //Giro del drone
-                        //altitude(((y - Y)/maxR)*(-1)); //Altitud del drone
+
                         sendAltYaw(((y - Y)/maxR)*(-1), ((x - X)/maxR));
                         
                         ctx.clearRect(0, 0, cw, ch); // Clear and redraw the joystick
@@ -151,11 +149,7 @@ function rightJoystick(){
                 x = X + elR * Math.cos(angulo);
                 y = Y + elR * Math.sin(angulo);
                 
-                
-                //rotationChange(((x - X)/maxR)); //Giro del drone
-                //altitude(((y - Y)/maxR)*(-1)); //Altitud del drone
                 sendAltYaw(((y - Y)/maxR)*(-1), ((x - X)/maxR));
-
                 
                 ctx.clearRect(0, 0, cw, ch);
                 dibujarAro(X, Y, RHoop);

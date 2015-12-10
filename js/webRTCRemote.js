@@ -1,9 +1,10 @@
 // about:webrtc
 
+
 var remoteStream; // stream local de video + audio
 var PeerConnection; // 
 
-var remoteVideo = document.querySelector('#droneVideo'); // 
+ 
 
 // Variable para dataChannel
 var dataChannel;
@@ -183,7 +184,7 @@ function handleIceCandidate(event){
 	
 }
 function handleRemoteStreamAdded(event) {
-	window.remoteStream = event.stream; // make avalaible on console for inspection
+	window.remoteVideo = remoteVideo; // make avalaible on console for inspection
 	if (window.URL){
 		remoteVideo.src = window.URL.createObjectURL(event.stream);
 	} else{

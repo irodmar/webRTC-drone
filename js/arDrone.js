@@ -2,7 +2,7 @@
 
 
 
-var introrobot_js = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pose3DProxyPort){
+var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pose3DProxyPort){
         
         // Variables generales
         var ARDRONE1 = 0;

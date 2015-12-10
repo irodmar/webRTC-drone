@@ -1,12 +1,12 @@
 // Archivo que se encarga de la comunicacion con el servidor de señalozacion y llama a las funciones necesarias de webRTC
 //del droenr
-var introrobot;
+var arDrone;
 var intervalo;
 // Pedimos nombre de la sala
 var room = prompt('Introduce el nombre de la nueva sala:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("10.10.49.21");
+var socket = io.connect("10.10.48.188");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {
@@ -23,9 +23,9 @@ socket.on('created', function (room){
 
 socket.on('join watcher', function (room){
 	console.log('Un "watcher" se ha unido a la sala ' + room);
-	if (introrobot.isArDroneConnected) {
+	if (arDrone.isArDroneConnected) {
 		createPeerConnection(false);
-		intervalo = setInterval(introrobot.updateAndSend, 20); // intervalo de envio de los valores
+		intervalo = setInterval(arDrone.updateAndSend, 20); // intervalo de envio de los valores
 	} else {
 		console.log("ArDrone is not connected, not creating RTCPeerConnection. Relaunch the app.");
 	}
@@ -33,9 +33,9 @@ socket.on('join watcher', function (room){
 
 socket.on('join remote', function (room){
 	console.log('Un "remote" se ha unido a la sala ' + room);
-	if (introrobot.isArDroneConnected) {
+	if (arDrone.isArDroneConnected) {
 		createPeerConnection(true);
-		intervalo = setInterval(introrobot.updateAndSend, 20); // intervalo de envio de los valores
+		intervalo = setInterval(arDrone.updateAndSend, 20); // intervalo de envio de los valores
 	} else {
 		console.log("ArDrone is not connected, not creating RTCPeerConnection. Relaunch the app.");
 	}
@@ -54,6 +54,6 @@ socket.on('log', function (array){
 
 
 function startArDrone() {
-	introrobot = new introrobot_js ("10.10.49.21", 17000, 15000, 11000, 19000); //Conexion con el Drone
-	introrobot.start();
+	arDrone = new arDrone ("10.10.48.188", 17000, 15000, 11000, 19000); //Conexion con el Drone
+	arDrone.start();
 }

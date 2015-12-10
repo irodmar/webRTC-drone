@@ -27,9 +27,10 @@ function handleUserMedia(stream){
 	localStream = stream;
 	//console.log('Usando dispositivo de video: ' + localStream.getVideoTracks()[0].label);
 	//console.log('Usando dispositivo de audio: ' + localStream.getAudioTracks()[0].label);
-	window.stream = stream; // make avalaible on console for inspection
+	//window.stream = stream; // make avalaible on console for inspection
 	if (window.URL){
 		localVideo.src = window.URL.createObjectURL(stream);
+		window.AVER = stream;
 	} else{
 		localVideo.src = stream;
 	}
@@ -145,16 +146,16 @@ function createPeerConnection(isRemote){
 		//console.log("Data**** " + data.x + data.y);
 		if ("orden" in data) {
 			if (data.orden == "takeoff") {
-				introrobot.takeoff();
+				arDrone.takeoff();
 			} else if (data.orden == "land") {
-				introrobot.land();
+				arDrone.land();
 			} else {
 				console.log("Orden no valida. ");
 			}
 		} else if ("x" in data) {
-			introrobot.setXYValues(data.x, data.y);
+			arDrone.setXYValues(data.x, data.y);
 		} else if ("alt" in data) {
-			introrobot.setAltWay(data.alt, data.yaw);
+			arDrone.setAltWay(data.alt, data.yaw);
 		} else {
 			console.log("Dato invalido. ");
 		}
