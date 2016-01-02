@@ -35,7 +35,7 @@ socket.on('join remote', function (room){
 	console.log('Un "remote" se ha unido a la sala ' + room);
 	if (arDrone.isArDroneConnected) {
 		createPeerConnection(true);
-		intervalo = setInterval(arDrone.updateAndSend, 200); // intervalo de envio de los valores
+		intervalo = setInterval(arDrone.updateAndSend, 50); // intervalo de envio de los valores
 	} else {
 		console.log("ArDrone is not connected, not creating RTCPeerConnection. Relaunch the app.");
 	}
@@ -54,6 +54,6 @@ socket.on('log', function (array){
 
 
 function startArDrone() {
-	arDrone = new arDrone("192.168.1.112", 17000, 15000, 11000, 19000); //Conexion con el Drone
+	arDrone = new arDrone("192.168.1.117", 17000, 15000, 11000, 19000); //Conexion con el Drone
 	arDrone.start();
 }

@@ -89,11 +89,11 @@ var pc_constraints = {
 ]};
 
 /////////////////////// Definimos RTCPeerConnection
-RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || 
+var RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || 
                        window.webkitRTCPeerConnection || window.msRTCPeerConnection;
-RTCPSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription ||
+var RTCPSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription ||
                        window.webkitRTCSessionDescription || window.msRTCSessionDescription;
-RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
+var RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
                         window.webkitRTCIceCandidate || window.msRTCIceCandidate;
 // Chrome
 //if (navigator.webkitGetUserMedia){

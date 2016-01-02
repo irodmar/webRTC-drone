@@ -56,13 +56,13 @@ video#droneVideo {
 
 
 
-.left {
+#leftJoystick {
        position: absolute;
        bottom: 25px;
        left: 50px;
 }
 
-.right {
+#rightJoystick {
        position: absolute;
        bottom: 25px;
        right: 50px;

@@ -209,7 +209,6 @@ function createPeerConnection(isRemote){
 				candidate:message.candidate});
 			PeerConnection.addIceCandidate(candidate);
 		}
-		alert(JSON.stringify(RTCPSessionDescription));
 		
 });
 		
