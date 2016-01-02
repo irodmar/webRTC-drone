@@ -323,7 +323,7 @@ var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pos
         }
         this.updateAndSend = function(){updateAndSend()}
         this.setXYValues = function(VX,VY){setXYValues(VX, VY)}
-        this.setAltWay = function (alt, yaw){
+        this.setAltYaw = function (alt, yaw){
                 rotationChange(yaw); //Giro del drone
                 altitude(alt); //Altitud del drone
         }

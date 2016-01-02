@@ -5,16 +5,18 @@
 	<link rel="stylesheet" type="text/css" href="css/flightindicators.css">
   	<link rel="stylesheet" href="css/Proyecto.css">
 
-
 	<script src='/socket.io/socket.io.js'></script>
-	<script src='js/socketioRemote.js'></script>
-	<script src='js/webRTCRemote.js'></script>
 	<script src="js/jquery-2.1.4.min.js"></script>
+
 	<script src="js/jquery.flightindicators.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+	<script src='js/webRTCRemote.js'></script>
+	<script src='js/socketioRemote.js'></script>
+
 	<script type="text/javascript" src="js/droneSensors.js"></script>
 	<script src= js/joysticks.js></script>
-	
-	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/gamePad.js"></script>
 
 
 	<title>Remote - PFG Iván Rodríguez - WebRTC on a Drone</title>
@@ -42,21 +44,7 @@
 
 
 
-  <script>
-	var remoteVideo = document.getElementById("droneVideo"); // 
 
-if (remoteVideo == null) {
-    console.log("Me cago en la puta****" + remoteVideo);
-} else {
-	console.log("Que pasa aqui***");
-}
-  $(function() {
-    $( "#attitude" ).draggable();
-	$( "#altimeter" ).draggable();
-	$( "#turn_coordinator" ).draggable();
-    $( "#heading" ).draggable();
-  });
-  </script>
 
 </body>
 </html>

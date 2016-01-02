@@ -25,9 +25,7 @@ function sendNavigationData(pose, navdata) {
 
 function handleUserMedia(stream){
 	localStream = stream;
-	//console.log('Usando dispositivo de video: ' + localStream.getVideoTracks()[0].label);
-	//console.log('Usando dispositivo de audio: ' + localStream.getAudioTracks()[0].label);
-	//window.stream = stream; // make avalaible on console for inspection
+
 	if (window.URL){
 		localVideo.src = window.URL.createObjectURL(stream);
 		window.AVER = stream;
@@ -82,6 +80,7 @@ RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection ||
                        window.webkitRTCPeerConnection || window.msRTCPeerConnection;
 RTCPSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription ||
                        window.webkitRTCSessionDescription || window.msRTCSessionDescription;
+window.dess = RTCPSessionDescription;
 RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
                         window.webkitRTCIceCandidate || window.msRTCIceCandidate;
 // Chrome
@@ -139,11 +138,7 @@ function createPeerConnection(isRemote){
 	
 	
 	// ******* Funciones del DataChannel ********
-	
-	function handleMessage(event) {
-		//console.log('Received message: ' + event.data);
-		var data = JSON.parse(event.data);
-		//console.log("Data**** " + data.x + data.y);
+	function handleReceiveData(data) {
 		if ("orden" in data) {
 			if (data.orden == "takeoff") {
 				arDrone.takeoff();
@@ -155,10 +150,16 @@ function createPeerConnection(isRemote){
 		} else if ("x" in data) {
 			arDrone.setXYValues(data.x, data.y);
 		} else if ("alt" in data) {
-			arDrone.setAltWay(data.alt, data.yaw);
+			arDrone.setAltYaw(data.alt, data.yaw);
 		} else {
 			console.log("Dato invalido. ");
-		}
+		}		
+	}
+	
+	function handleMessage(event) {
+		//console.log('Received message: ' + event.data);
+		var data = JSON.parse(event.data);
+		handleReceiveData(data);
 	}
 	
 	function handleReceiveChannelStateChange() {
@@ -207,7 +208,8 @@ function createPeerConnection(isRemote){
 			var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
 				candidate:message.candidate});
 			PeerConnection.addIceCandidate(candidate);
-		}		
+		}
+		alert(JSON.stringify(RTCPSessionDescription));
 		
 });
 		

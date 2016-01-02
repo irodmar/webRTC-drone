@@ -1,5 +1,11 @@
 // about:webrtc
 
+$(function() {
+    $( "#attitude" ).draggable();
+    $( "#altimeter" ).draggable();
+    $( "#turn_coordinator" ).draggable();
+    $( "#heading" ).draggable();
+});
 
 var remoteStream; // stream local de video + audio
 var PeerConnection; // 
@@ -45,7 +51,7 @@ function getPitch(qw,qx,qy,qz){
 }
 
 
-function updateAndShow(pose, novdata){
+function updateAndShow(pose, navdata){
         // calculate yaw, pitch, and roll
         var yaw = getYaw(pose.q0, pose.q1, pose.q2, pose.q3);
         var pitch = getPitch(pose.q0, pose.q1, pose.q2, pose.q3);
@@ -154,9 +160,7 @@ function sendAltYaw(alt, yaw){
 function handleMessage(event) {
     //console.log('Received message: ' + event.data);
     var data = JSON.parse(event.data);
-    var pose = data.pose;
-    var navdata = data.navdata;
-    updateAndShow(pose, navdata);
+    updateAndShow(data.pose, data.navdata);
 }
 
 function handleSendChannelStateChange() {
@@ -185,6 +189,8 @@ function handleIceCandidate(event){
 }
 function handleRemoteStreamAdded(event) {
 	window.remoteVideo = remoteVideo; // make avalaible on console for inspection
+    var remoteVideo = document.getElementById("droneVideo"); // 
+
 	if (window.URL){
 		remoteVideo.src = window.URL.createObjectURL(event.stream);
 	} else{
