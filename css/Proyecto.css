@@ -30,6 +30,10 @@ video#droneVideo {
        background-size: cover; 
 }
 
+#mapa{
+       position: absolute;
+       bottom: 10px;
+}
 
 #attitude {     
        float: left;

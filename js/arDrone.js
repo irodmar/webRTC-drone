@@ -39,7 +39,6 @@ var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pos
         cmd.angularZ=0.0;
         cmd.angularX=0.0;
         cmd.angularY=0.0;
-        window.cmd = cmd;
         
         var pose = new jderobot.Pose3DData; //pose3DData
         

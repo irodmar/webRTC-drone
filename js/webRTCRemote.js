@@ -10,54 +10,11 @@ $(function() {
 var remoteStream; // stream local de video + audio
 var PeerConnection; // 
 
- 
+var pose;
+var navdata;
 
 // Variable para dataChannel
 var dataChannel;
-
-
-function getYaw(qw,qx,qy,qz) {                     
-        var rotateZa0=2.0*(qx*qy + qw*qz);
-        var rotateZa1=qw*qw + qx*qx - qy*qy - qz*qz;
-        var rotateZ=0.0;
-        if(rotateZa0 != 0.0 && rotateZa1 != 0.0){
-            rotateZ=Math.atan2(rotateZa0,rotateZa1);
-        }
-        return rotateZ*180/Math.PI ;
-}
-
-function getRoll(qw,qx,qy,qz){
-        rotateXa0=2.0*(qy*qz + qw*qx);
-        rotateXa1=qw*qw - qx*qx - qy*qy + qz*qz;
-        rotateX=0.0;
-        
-        if(rotateXa0 != 0.0 && rotateXa1 !=0.0){
-            rotateX=Math.atan2(rotateXa0, rotateXa1)
-        }   
-        return rotateX*180/Math.PI;
-}
-function getPitch(qw,qx,qy,qz){
-        rotateYa0=-2.0*(qx*qz - qw*qy);
-        rotateY=0.0;
-        if(rotateYa0>=1.0){
-            rotateY=math.PI/2.0;
-        } else if(rotateYa0<=-1.0){
-            rotateY=-Math.PI/2.0
-        } else {
-            rotateY=Math.asin(rotateYa0)
-        }
-        
-        return rotateY*180/Math.PI;
-}
-
-
-function updateAndShow(pose, navdata){
-        // calculate yaw, pitch, and roll
-        var yaw = getYaw(pose.q0, pose.q1, pose.q2, pose.q3);
-        var pitch = getPitch(pose.q0, pose.q1, pose.q2, pose.q3);
-        var roll = getRoll(pose.q0, pose.q1, pose.q2, pose.q3);
-        panelControl.updatePanelControl(yaw, pitch, roll, pose);
-}
 
 
 // PeerConnection
@@ -160,7 +117,9 @@ function sendAltYaw(alt, yaw){
 function handleMessage(event) {
     //console.log('Received message: ' + event.data);
     var data = JSON.parse(event.data);
-    updateAndShow(data.pose, data.navdata);
+    poseMapa = data.pose;
+    navdata = data.navdata;
+    //updateAndShow(data.pose, data.navdata); quitar de aqui
 }
 
 function handleSendChannelStateChange() {

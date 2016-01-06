@@ -9,7 +9,7 @@ var intervalo = null;
 var room = prompt('Introduce el nombre de la sala a la que te quieres unir:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("192.168.1.107");
+var socket = io.connect("192.168.1.110");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {
@@ -22,6 +22,7 @@ socket.on('joined', function (room){
 	panelControl = new panelControl();
 	leftJoystick();
 	rightJoystick();
+	mapa();
 });
 
 
