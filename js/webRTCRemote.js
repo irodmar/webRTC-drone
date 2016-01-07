@@ -117,7 +117,7 @@ function sendAltYaw(alt, yaw){
 function handleMessage(event) {
     //console.log('Received message: ' + event.data);
     var data = JSON.parse(event.data);
-    poseMapa = data.pose;
+    pose = data.pose;
     navdata = data.navdata;
     //updateAndShow(data.pose, data.navdata); quitar de aqui
 }

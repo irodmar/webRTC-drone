@@ -1,5 +1,4 @@
 
-var poseMapa;
 
 function mapa(args) {
 	
@@ -21,7 +20,7 @@ function mapa(args) {
 	//Camara
 	var camera = new THREE.PerspectiveCamera( 45, mapa.width/mapa.height, 0.1, 1000 );
 	camera.up.set( 0, 0, 1 );
-	camera.position.set( 23, 27, 18 );
+	camera.position.set( 18,20, 18 );
 	camera.lookAt( new THREE.Vector3( 0, 0, 0 )  );
 	
 	// Ejes
@@ -36,16 +35,9 @@ function mapa(args) {
 	renderer.shadowMap.type = THREE.PCFShadowMap;
 	document.body.appendChild( renderer.domElement );
 	
-	// PAra indicar donde esa el drone, la geometria, el matrial y el elemento cubo
-	var sphereGeometry = new THREE.SphereGeometry( 1, 24, 2 );
-	var sphereMaterial = new THREE.MeshLambertMaterial( {color: 0x399a00} ); //, side:THREE.DoubleSide
-	var sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
-	sphere.castShadow = true;
-	sphere.receiveShadow = false;
-	sphere.rotation.x = -0.5*Math.PI;
-	scene.add( sphere );
+
 	
-	// Suelo. Si encuento algo mejor lo quito
+	// Suelo. 
 	var planeGeometry = new THREE.PlaneGeometry( 40, 40);
 	var planeMaterial = new THREE.MeshLambertMaterial( {color: 0xcccccc} );
 	var plane = new THREE.Mesh( planeGeometry, planeMaterial );
@@ -56,6 +48,13 @@ function mapa(args) {
 	plane.receiveShadow = true;
 	scene.add( plane );
 	
+	// Cuadricula en el suelo para mejorar la situacion del drone
+	var gridHelper = new THREE.GridHelper( 20, 1 );
+	gridHelper.up.set(0, 0, 1);
+	gridHelper.position.set(0, 0, 0);
+	gridHelper.rotation.x=-0.5*Math.PI;
+	scene.add( gridHelper );
+	
 	// Para indicar la posicion inicial del Drone
 	var material = new THREE.MeshLambertMaterial( {color: 0xFFBF00} );
 	var circleGeometry = new THREE.CircleGeometry( 0.5, 128 );
@@ -64,7 +63,7 @@ function mapa(args) {
 	circle.castShadow = false;
 	scene.add( circle );
 	
-	
+	// Luces
 	var spotLight = new THREE.SpotLight(0xffffff);
 	spotLight.position.set(0, 0, 120);
 	spotLight.castShadow = true;
@@ -73,30 +72,48 @@ function mapa(args) {
 	var spotLightHelper = new THREE.SpotLightHelper( spotLight );
 	scene.add( spotLightHelper );
 	
-
+	//Drone mediante Collada
+	var loader = new THREE.ColladaLoader();
+	//loader.upAxis = 'Z';
+	loader.load('./collada/quadrotor/quadrotor_4.dae', function ( collada ) {
+		
+		dae = collada.scene;
+		
+		dae.position.x = 0;
+		dae.position.y = 0;
+		dae.position.z = 1;
+		dae.scale.x = dae.scale.y = dae.scale.z = 5;
+        dae.updateMatrix();
+	   
+		daemesh = dae.children[0].children[0];
+		daemesh.castShadow = true;
+		daemesh.receiveShadow = true;
+        
+	    scene.add( dae );
+		render();
+	});
 
 
 	
 	var render = function () {
+		requestAnimationFrame( render );
 		stats.begin();
-		if (poseMapa == undefined) {
-			sphere.position.x = 0;
-			sphere.position.y = 0
-			sphere.position.z = 0;
+		if (pose == undefined) {
+			dae.position.x = 0;
+			dae.position.y = 0
+			dae.position.z = 0;
 		}else {
-			sphere.position.x = poseMapa.x;
-			sphere.position.y = poseMapa.y;
-			sphere.position.z = poseMapa.z;
-			panelControl.updatePanelControl(navdata, poseMapa);
+			dae.quaternion.set(pose.q1, pose.q2, pose.q3, pose.q0);
+			dae.position.set(pose.x, pose.y, pose.z);
+				
+			panelControl.updatePanelControl(navdata, pose);// update sensors watchers
 		}
 
 		renderer.render(scene, camera);
 		//ACtualizo con requestAnimationFrame los relojes de los sensores
 
 		stats.end();
-		requestAnimationFrame( render );
 	};
 	
-	render();
 }
 

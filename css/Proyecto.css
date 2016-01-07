@@ -33,6 +33,8 @@ video#droneVideo {
 #mapa{
        position: absolute;
        bottom: 10px;
+       left: 50%;
+       margin-left: -250px;
 }
 
 #attitude {     
@@ -53,7 +55,7 @@ video#droneVideo {
 
 #buttons {     
        position: absolute;
-       bottom: 0px;
+       top: 0px;
        right: 50%;
 }
 
