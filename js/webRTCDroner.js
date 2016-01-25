@@ -15,11 +15,10 @@ var fader = document.getElementById("fader");
 
 
 
-// enviamos cada setInterval el valor del archivo
 function sendNavigationData(pose, navdata) {
 	var s = {pose:pose, navdata:navdata};
 	dataChannel.send(JSON.stringify(s));
-	console.log("Send navigationData.");
+	//console.log("Send navigationData.");
 }
 
 
@@ -177,7 +176,7 @@ function createPeerConnection(isRemote){
 		if (isRemote) {		
 			try {
 				// Create a reliable data channel
-				dataChannel = PeerConnection.createDataChannel("droneDataChannel", {reliable:false, maxRetransmits: 10});
+				dataChannel = PeerConnection.createDataChannel("droneDataChannel", {ordered: true, maxRetransmits: 3});
 				dataChannel.onerror = function (error) {
 					console.log("Data Channel Error:", error);
 				};

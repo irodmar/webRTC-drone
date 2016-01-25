@@ -3,7 +3,15 @@
 
 
 var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pose3DProxyPort){
+        var stats = new Stats();
+        stats.setMode( 1 ); // 0: fps, 1: ms, 2: mb
+    
+        // align top-left
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0px';
+        stats.domElement.style.top = '0px';
         
+        document.body.appendChild( stats.domElement );
         // Variables generales
         var ARDRONE1 = 0;
         var ARDRONE2 = 1;
@@ -250,7 +258,7 @@ var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pos
         function setPose3D (){    
             pose3DProxy.setPose3DData(pose).then(
                     function (ar){
-                        console.log("setPose3DData.");
+                        //console.log("setPose3DData.");
                     },
                     function(ex, ar){
                         console.log("Fail setPose3DData function: " + ar);
@@ -314,11 +322,15 @@ var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pos
         
         
         function updateAndSend(){
+                //requestAnimationFrame(updateAndSend);
+                stats.begin();
+
                 if (isChannelRunning) {                    
                         updatePose();
                         updateNavData();
                         sendNavigationData(pose, navdata);
                 }
+           		stats.end();
         }
         this.updateAndSend = function(){updateAndSend()}
         this.setXYValues = function(VX,VY){setXYValues(VX, VY)}

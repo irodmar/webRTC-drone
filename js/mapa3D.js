@@ -1,6 +1,6 @@
 
 
-function mapa(args) {
+function mapa() {
 	
 	var mapa = document.getElementById("mapa");
 	
@@ -69,8 +69,8 @@ function mapa(args) {
 	spotLight.castShadow = true;
 	scene.add( spotLight);
 	
-	var spotLightHelper = new THREE.SpotLightHelper( spotLight );
-	scene.add( spotLightHelper );
+	//var spotLightHelper = new THREE.SpotLightHelper( spotLight );
+	//scene.add( spotLightHelper );
 	
 	//Drone mediante Collada
 	var loader = new THREE.ColladaLoader();
@@ -96,7 +96,6 @@ function mapa(args) {
 
 	
 	var render = function () {
-		requestAnimationFrame( render );
 		stats.begin();
 		if (pose == undefined) {
 			dae.position.x = 0;
@@ -110,9 +109,9 @@ function mapa(args) {
 		}
 
 		renderer.render(scene, camera);
-		//ACtualizo con requestAnimationFrame los relojes de los sensores
 
 		stats.end();
+		requestAnimationFrame( render );
 	};
 	
 }

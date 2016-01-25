@@ -1,6 +1,6 @@
 
+var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-var haveEvents = 'ongamepadconnected' in window;
 var chromeInterval = null;
 var updateGPInterval = null;
 var navegador = navigator.userAgent;
@@ -38,18 +38,18 @@ function updateGamePad() {
         // axes[3] = Yaw         axes[3] = Yaw
         // axes[4] = Alt         axes[4] = Alt
         
-        //if (haveEvents) {
+        if (haveEvents) {
             var Y = applyDeadzone(gp.axes[0], 0.12);
             var X = applyDeadzone(gp.axes[1], 0.12);
             var Yaw = applyDeadzone(gp.axes[3], 0.12);
             var Alt = applyDeadzone(gp.axes[4], 0.12);
-        //} else{
-            //console.log("axe 1 :" + gp.axes[1]*(-1));
-            //var Y = applyDeadzone(gp.axes[0], 0.12);
-            //var X = applyDeadzone(gp.axes[1], 0.12);
-            //var Yaw = applyDeadzone(gp.axes[2], 0.12);
-            //var Alt = applyDeadzone(gp.axes[3], 0.12);
-         //}
+        } else{
+            console.log("axe 1 :" + gp.axes[1]*(-1));
+            var Y = applyDeadzone(gp.axes[0], 0.12);
+            var X = applyDeadzone(gp.axes[1], 0.12);
+            var Yaw = applyDeadzone(gp.axes[2], 0.12);
+            var Alt = applyDeadzone(gp.axes[3], 0.12);
+         }
          sendCMDVel(-X,Y);// Change variables and send the command to the drone
          sendAltYaw(-Alt, Yaw);
     }
@@ -82,6 +82,6 @@ function scangamepad() {
 
 window.addEventListener("gamepadconnected", connecthandler);
 window.addEventListener("gamepaddisconnected", disconnecthandler);
-//if (!haveEvents) { // detect the gamepad in chrome
-    //chromeInterval = setInterval(scangamepad, 1000);
-//}
+if (isChrome) { // detect the gamepad in chrome
+    chromeInterval = setInterval(scangamepad, 1000);
+}
