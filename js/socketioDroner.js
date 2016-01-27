@@ -6,7 +6,7 @@ var intervalo;
 var room = prompt('Introduce el nombre de la nueva sala:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("10.10.49.70");
+var socket = io.connect("192.168.1.136");
 
 // Send 'Create or join' message to singnaling server
 if (room !== '') {
@@ -60,6 +60,6 @@ socket.on('log', function (array){
 
 
 function startArDrone() {
-	arDrone = new arDrone("10.10.49.70", 17000, 15000, 11000, 19000); //Conexion con el Drone
+	arDrone = new arDrone("192.168.1.140", 17000, 15000, 11000, 19000); //Conexion con el Drone
 	arDrone.start();
 }

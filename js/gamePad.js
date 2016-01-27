@@ -20,7 +20,7 @@ var applyDeadzone = function(number, threshold){
 
 function updateGamePad() {
     var gp = navigator.getGamepads()[0];
-    if (!gp && !haveEvents) {
+    if (!gp && isChrome) {
         disconnecthandler();
         chromeInterval = setInterval(scangamepad, 1000);        
     } else {
@@ -38,13 +38,12 @@ function updateGamePad() {
         // axes[3] = Yaw         axes[3] = Yaw
         // axes[4] = Alt         axes[4] = Alt
         
-        if (haveEvents) {
+        if (!isChrome) {
             var Y = applyDeadzone(gp.axes[0], 0.12);
             var X = applyDeadzone(gp.axes[1], 0.12);
             var Yaw = applyDeadzone(gp.axes[3], 0.12);
             var Alt = applyDeadzone(gp.axes[4], 0.12);
         } else{
-            console.log("axe 1 :" + gp.axes[1]*(-1));
             var Y = applyDeadzone(gp.axes[0], 0.12);
             var X = applyDeadzone(gp.axes[1], 0.12);
             var Yaw = applyDeadzone(gp.axes[2], 0.12);
