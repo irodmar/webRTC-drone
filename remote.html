@@ -1,0 +1,92 @@
+<!--**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
+
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************-->
+
+
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="icon" type="image/png" href="/img/drone.png" />
+
+	<link rel="stylesheet" type="text/css" href="css/flightindicators.css">
+  	<link rel="stylesheet" href="css/Proyecto.css">
+  	<link rel="stylesheet" href="css/battery.css">
+  	<link rel="stylesheet" href="css/velocidadMax.css">
+  	<link rel="stylesheet" href="css/buttons.css">
+
+
+	<script type="text/javascript" src='/socket.io/socket.io.js'></script>
+	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+
+	<script type="text/javascript" src="js/jquery.flightindicators.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="js/droneSensors.js"></script>
+	<script type="text/javascript" src= js/joysticks.js></script>
+    <script type="text/javascript" src="js/gamePad.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+
+	<script src="js/three.js"></script>
+	<script src="js/ColladaLoader.js"></script>
+    <script type="text/javascript" src="js/mapa3D.js"></script>
+    <script type="text/javascript" src="js/stats.min.js"></script>
+
+	<script type="text/javascript" src='js/webRTCRemote.js'></script>
+	<script type="text/javascript" src='js/socketioRemote.js'></script>
+
+	<title>Remote - PFG Iván Rodríguez - WebRTC on a Drone</title>
+</head>
+
+<body>
+
+<video id="droneVideo" autoplay ></video>
+
+<section>
+	<span id="attitude"></span>
+	<span id="altimeter"></span>
+	<span id="turn_coordinator"></span>
+	<span id="heading"></span>
+</section>
+
+<div id = buttons>	
+	<a href="#" data-icon="" class="button orange shield xs" onclick= enviarOrden("takeoff")> TakeOff</a>
+	<a href="#" data-icon="" class="button green shield xs" onclick = enviarOrden("land")>Landing</a>
+</div>	
+
+	<canvas id='leftJoystick' class = joystick width=160 height=160>Su navegador no soporta canvas :( </canvas>
+	<canvas id=rightJoystick class = joystick width=160 height=160>Su navegador no soporta canvas :( </canvas>
+
+	<canvas id=mapa class = mapa >Su navegador no soporta canvas :( </canvas>
+
+
+<div id='battery'>
+  <div class='bottom'></div>
+  <div class='middle'>
+    <span class='glass'></span>
+    <div id='fill' class='fill'></div>
+  </div>
+  <div class='top-b'></div>
+  <div class='top-a'></div>
+</div>
+
+
+<a href="#menu" id="toggle"><span></span></a>
+<div id="menu">
+  <ul>
+    <li>Velocidad</li>    
+    <li><input type=range data-show-value="true" name=velocidad id=velocidad min=0 max=1 step="0.1" value=0 onchange="outputUpdate(value)"/> </li>
+	<li><output for=fader id=velocidad_out>0</output></li>
+  </ul>
+</div>
+
+
+</body>
+</html>

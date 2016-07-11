@@ -1,0 +1,50 @@
+<!--**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
+
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************-->
+
+
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  	<link rel="stylesheet" href="css/Proyecto.css">
+
+	<link rel="icon" type="image/png" href="/img/drone.png" />
+	
+	
+	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+
+	<title>Droner - PFG Ivan Rodriguez - WebRTC on a Drone</title>
+</head>
+
+<body>
+
+	<video id="localVideo" width="600" height="450" autoplay controls wid></video>
+
+
+
+<script type="text/javascript" src="js/zeroc-icejs-master/lib/Ice.js"></script>
+<script type="text/javascript" src="js/zeroc-icejs-master/lib/Glacier2.js"></script>
+<script type="text/javascript" src="js/zeroc-icejs-master/lib/IceStorm.js"></script>
+<script type="text/javascript" src="js/jderobot/cmdvel.js"></script>
+<script type="text/javascript" src="js/jderobot/ardroneextra.js"></script>
+<script type="text/javascript" src="js/jderobot/navdata.js"></script>
+<script type="text/javascript" src="js/jderobot/pose3d.js"></script>
+<script type="text/javascript" src="js/config.js"></script>
+
+<script src= js/arDrone.js></script>
+<script type="text/javascript" src="js/stats.min.js"></script>
+
+<script src='/socket.io/socket.io.js'></script>
+<script src='js/socketioDroner.js'></script>
+<script src='js/webRTCDroner.js'></script>
+
+</body>
+</html>
