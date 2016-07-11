@@ -1,47 +1,40 @@
+/**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
+
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************/
+
+
+
 // Archivo que se encarga de la comunicacion con el servidor de señalozacion y llama a las funciones necesarias de webRTC
-//del droenr
+//del droner
 var arDrone;
 var intervalo;
-// Pedimos nombre de la sala
-var room = prompt('Introduce el nombre de la nueva sala:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("192.168.1.136");
+var socket = io.connect(Server_IP);
 
-// Send 'Create or join' message to singnaling server
-if (room !== '') {
-	console.log('Create room', room);
-	socket.emit('create', room);
-}
+socket.emit('create'); // Creamos conexion con el servidor
+
  
 // Recibimos respuesta del servidor de sala creada y llamamos a getUserMedia
-socket.on('created', function (room){
-	console.log('Created room ' + room);
+socket.on('created', function (){
 	callGetUserMedia();
 	startArDrone();
-});
-
-socket.on('join watcher', function (room){
-	console.log('Un "watcher" se ha unido a la sala ' + room);
-	if (arDrone.isArDroneConnected) {
-		createPeerConnection(false);
-		requestAnimationFrame( arDrone.updateAndSend); // intervalo de envio de los valores
-	} else {
-		console.log("ArDrone is not connected, not creating RTCPeerConnection. Relaunch the app.");
-	}
+	//console.log('Droner ready.');
 });
 
 
-// 		intervalo = setInterval(arDrone.updateAndSend, 50); // intervalo de envio de los valores
-
-
-
-socket.on('join remote', function (room){
-	console.log('Un "remote" se ha unido a la sala ' + room);
+socket.on('join remote', function (){
+	//console.log('Un "remote" se ha unido.');
 	if (arDrone.isArDroneConnected) {
 		createPeerConnection(true);
 		intervalo = setInterval(arDrone.updateAndSend, 15); // intervalo de envio de los valores
-		//requestAnimationFrame( arDrone.updateAndSend); // intervalo de envio de los valores
 	} else {
 		console.log("ArDrone is not connected, not creating RTCPeerConnection. Relaunch the app.");
 	}
@@ -49,7 +42,7 @@ socket.on('join remote', function (room){
 
 
 function sendMessage(message){
-	console.log('Enviando mensaje: ', message);
+	//console.log('Enviando mensaje: ', message);
 	socket.emit('message', message);
 }
 
@@ -60,6 +53,6 @@ socket.on('log', function (array){
 
 
 function startArDrone() {
-	arDrone = new arDrone("192.168.1.140", 17000, 15000, 11000, 19000); //Conexion con el Drone
+	arDrone = new arDrone(Drone_IP, BaseExtra_Port, Navdata_Port, CMDVel_Port, Pose3D_Port); //Conexion con el Drone
 	arDrone.start();
 }

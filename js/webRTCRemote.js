@@ -1,3 +1,14 @@
+/**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
+
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************/
+
 // about:webrtc
 
 $(function() {
@@ -52,44 +63,28 @@ var RTCPSessionDescription = window.RTCSessionDescription || window.mozRTCSessio
                        window.webkitRTCSessionDescription || window.msRTCSessionDescription;
 var RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate ||
                         window.webkitRTCIceCandidate || window.msRTCIceCandidate;
-// Chrome
-//if (navigator.webkitGetUserMedia){
-	//RTCPeerConnection = webkitRTCPeerConnection;
 
-// Firerox
-//} else if (navigator.mozGetUserMedia) {
-//	RTCPeerConnection = mozRTCPeerConnection;
-	//RTCPSessionDescription = mozRTCSessionDescription;
-	//RTCIceCandidate = mozRTCIceCandidate;
-//}
-console.log('RTCPeerConnection object: ' + RTCPeerConnection);
 
-// Creaamos PeerConnection
+
+// Creamos PeerConnection
 function createPeerConnection(remoteSDP){
-	console.log('llamamos a createpeerconection');
-    console.log(remoteSDP);
 
 	try{
 		PeerConnection = new RTCPeerConnection(ICE_config, pc_constraints);
             PeerConnection.ondatachannel = gotReceiveChannel;
   
-            //console.log('PeerConnection creada con:\n'+ 
-            //	' config: \'' + JSON.stringify(ICE_config) + '\';\n' + 
-            //	' constrainsts: \'' + JSON.stringify(pc_constraints) + '\'.');
-            //PeerConnection.addStream(localStream); //No necesito añadir localStream a PeerConnection
             PeerConnection.setRemoteDescription(new RTCPSessionDescription(remoteSDP));
             PeerConnection.createAnswer(gotLocalDescription, onSignalingError);
             PeerConnection.onaddstream = handleRemoteStreamAdded;
             PeerConnection.onicecandidate = handleIceCandidate; // Manejador ICE local (manda ICE local a remoto)
-            console.log('Creando Oferta...');
-                // handler del Data Channel creadop por el droner
+        
 	} catch(e){
 		console.log('Fallo al crear PeerConnection, excepcion: ' + e.message);
 	}
 }
 
 function gotReceiveChannel(event) {
-	console.log('Receive Channel Callback');
+	//console.log('Receive Channel Callback');
 	dataChannel = event.channel;
 	dataChannel.onmessage = handleMessage;
 	dataChannel.onopen = handleSendChannelStateChange;
@@ -124,7 +119,7 @@ function handleMessage(event) {
 
 function handleSendChannelStateChange() {
 	var readyState = dataChannel.readyState;
-	console.log('Receive channel state is: ' + readyState);
+	//console.log('Receive channel state is: ' + readyState);
 	// If channel ready, enable user's input
 	if (readyState == "open") {
 
@@ -133,7 +128,7 @@ function handleSendChannelStateChange() {
 
 
 function handleIceCandidate(event){
-	console.log('handleIceCandidate event: ', event);
+	//console.log('handleIceCandidate event: ', event);
 	if (event.candidate) {
 		sendMessage({
 		type: 'candidate',
@@ -142,10 +137,9 @@ function handleIceCandidate(event){
 		candidate: event.candidate.candidate});
 	} else {
 		console.log('End of candidates.');
-	}
-		// console.log('Local ICE candidate: \n' + event.candidate.candidate);
-	
+	}	
 }
+
 function handleRemoteStreamAdded(event) {
 	window.remoteVideo = remoteVideo; // make avalaible on console for inspection
     var remoteVideo = document.getElementById("droneVideo"); // 
@@ -155,7 +149,7 @@ function handleRemoteStreamAdded(event) {
 	} else{
 		remoteVideo.src = event.stream;
 	}
-    console.log('Remote stream attached!!.');
+    //console.log('Remote stream attached!!.');
 	remoteStream = event.stream;
 }
 

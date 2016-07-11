@@ -1,15 +1,27 @@
+/**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
+
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************/
 
 
 function mapa() {
 	
 	var mapa = document.getElementById("mapa");
+	mapa.style.width = '30%';
+	mapa.style.height = '25%';
 	
 	var stats = new Stats();
-	stats.setMode( 1 ); // 0: fps, 1: ms, 2: mb
+	stats.setMode( 0 ); // 0: fps, 1: ms, 2: mb
 
 	// align top-left
 	stats.domElement.style.position = 'absolute';
-	stats.domElement.style.left = '0px';
+	stats.domElement.style.right = '0px';
 	stats.domElement.style.top = '0px';
 	
 	document.body.appendChild( stats.domElement );

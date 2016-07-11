@@ -1,3 +1,15 @@
+/**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
+
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************/
+
+
 // Archivo que se encarga de la comunicacion con el servidor de señalozacion y llama a las funciones necesarias de webRTC
 // del watcher
 
@@ -5,20 +17,15 @@
 var panelControl;
 var intervalo = null;
 
-// Pedimos nombre de la sala
-var room = prompt('Introduce el nombre de la sala a la que te quieres unir:');
 
 // conexion de Socket.io al servidor de señalizacion
-var socket = io.connect("192.168.1.136");
+var socket = io.connect(Server_IP);
 
-// Send 'Create or join' message to singnaling server
-if (room !== '') {
-	console.log('Join remote to: ', room);
-	socket.emit('join remote', room);
-}
+socket.emit('join remote');
 
-socket.on('joined', function (room){
-	console.log('This peer has joined room ' + room);
+
+socket.on('joined', function (){
+	//console.log('This peer has joined');
 	panelControl = new panelControl();
 	leftJoystick();
 	rightJoystick();
@@ -28,9 +35,9 @@ socket.on('joined', function (room){
 
 
 socket.on('message', function (message){
-	console.log('Received message:', message);
-        if (message.type === 'offer') {
-        	createPeerConnection(message);
+	//console.log('Received message:', message);
+    if (message.type === 'offer') {
+        createPeerConnection(message);
 
 	} else if (message.type === 'candidate') {
 		var candidate = new RTCIceCandidate({sdpMLineIndex:message.label,
@@ -41,7 +48,7 @@ socket.on('message', function (message){
 
 
 function sendMessage(message){
-	console.log('Enviando mensaje: ', message);
+	//console.log('Enviando mensaje: ', message);
 	socket.emit('message', message);
 }
 
@@ -49,3 +56,8 @@ function sendMessage(message){
 socket.on('log', function (array){
 	console.log.apply(console, array);
 });
+
+
+window.onload = function() {
+	loadVelMenu();	
+};

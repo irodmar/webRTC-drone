@@ -1,3 +1,14 @@
+/**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
+
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************/
+
 
 var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
@@ -49,8 +60,8 @@ function updateGamePad() {
             var Yaw = applyDeadzone(gp.axes[2], 0.12);
             var Alt = applyDeadzone(gp.axes[3], 0.12);
          }
-         sendCMDVel(-X,Y);// Change variables and send the command to the drone
-         sendAltYaw(-Alt, Yaw);
+         sendCMDVel(-X*velocidad,Y*velocidad);// Change variables and send the command to the drone
+         sendAltYaw(-Alt*velocidad, Yaw*velocidad);
     }
 }
 
@@ -72,7 +83,7 @@ function disconnecthandler(){
 
 function scangamepad() {
     var gp = navigator.getGamepads()[0];
-    console.log("Compruebo mando");
+    //console.log("Compruebo mando");
     if (gp){
         clearInterval(chromeInterval);
         connecthandler();

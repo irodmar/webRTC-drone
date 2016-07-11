@@ -1,12 +1,25 @@
+/**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
+
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************/
+
 var panelControl = function (){
     
+    var s = window.innerWidth*0.16;
     // Control Watches 
-    var attitude = $.flightIndicator('#attitude', 'attitude', {roll:50, pitch:-20, size:200, showBox : false}); // Horizon
-    var heading = $.flightIndicator('#heading', 'heading', {heading:150, showBox:false}); // Compass
-    //var variometer = $.flightIndicator('#variometer', 'variometer', {vario:-5, showBox:true}); // vertical speed
-    //var airspeed = $.flightIndicator('#airspeed', 'airspeed', {showBox: false}); // air speed
-    var altimeter = $.flightIndicator('#altimeter', 'altimeter', { showBox:false});
-    var turn_coordinator = $.flightIndicator('#turn_coordinator', 'turn_coordinator', {turn:0,  showBox:false}); // alas avion
+    var attitude = $.flightIndicator('#attitude', 'attitude', {roll:50, pitch:-20, size:s, showBox : false}); // Horizon
+    var heading = $.flightIndicator('#heading', 'heading', {heading:150, showBox:false, size:s}); // Compass
+    var altimeter = $.flightIndicator('#altimeter', 'altimeter', { showBox:false, size:s});
+    var turn_coordinator = $.flightIndicator('#turn_coordinator', 'turn_coordinator', {turn:0,  showBox:false, size:s}); // alas avion
+  
+    var battery = document.getElementById("fill");
+  
   
     function getYaw(qw,qx,qy,qz) {                     
             var rotateZa0=2.0*(qx*qy + qw*qz);
@@ -62,8 +75,11 @@ var panelControl = function (){
     
         // Heading update
         heading.setHeading(yaw);
-    
-        // Vario update
-        //variometer.setVario(2*Math.sin(increment/10));    
+        
+        // Cambiamos el ancho en el estilo del relleno de la bateria según el nivel de bateria que nos manda el drone
+        battery.style.width = String(navdata.batteryPercent) + "%";
+        window.navdata = navdata;
+        console.log(navdata.state);
+
     }
 }

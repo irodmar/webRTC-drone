@@ -1,14 +1,23 @@
+/**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
 
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************/
 
 
 
 var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pose3DProxyPort){
         var stats = new Stats();
-        stats.setMode( 1 ); // 0: fps, 1: ms, 2: mb
+        stats.setMode( 0 ); // 0: fps, 1: ms, 2: mb
     
         // align top-left
         stats.domElement.style.position = 'absolute';
-        stats.domElement.style.left = '0px';
+        stats.domElement.style.right = '0px';
         stats.domElement.style.top = '0px';
         
         document.body.appendChild( stats.domElement );
@@ -60,7 +69,7 @@ var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pos
         function startConnection(){
                 return new Promise(function(resolve, reject) {
                         // base extra connection
-                        var baseextra = communicator.stringToProxy("Extra:ws -h " + ip + " -p " + baseextraPort);
+                        var baseextra = communicator.stringToProxy("ardrone_extra:ws -h " + ip + " -p " + baseextraPort);
                         jderobot.ArDroneExtraPrx.checkedCast(baseextra).then(
                             function(ar){
                                 extraProxy = ar;
@@ -72,7 +81,7 @@ var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pos
                         );               
                         
                         // NavData
-                        var basenavdata = communicator.stringToProxy("Navdata:ws -h " + ip + " -p " + navdataProxyPort);
+                        var basenavdata = communicator.stringToProxy("ardrone_navdata:ws -h " + ip + " -p " + navdataProxyPort);
                         jderobot.NavdataPrx.checkedCast(basenavdata).then(
                             function(ar){
                                 console.log("navdataProxy connected: " + ar);
@@ -98,7 +107,7 @@ var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pos
                         );        
                       
                         // CMDVelPrx
-                        var basecmdVel = communicator.stringToProxy("CMDVel:ws -h " + ip + " -p " + cmdVelProxyPort);
+                        var basecmdVel = communicator.stringToProxy("ardrone_cmdvel:ws -h " + ip + " -p " + cmdVelProxyPort);
                         jderobot.CMDVelPrx.checkedCast(basecmdVel).then(
                             function(ar){
                                 console.log("cmdVelProxy connected: " + ar);
@@ -110,7 +119,7 @@ var arDrone = function(ip, baseextraPort, navdataProxyPort, cmdVelProxyPort, pos
                         );             
                       
                         // Pose3D
-                       var basepose3D = communicator.stringToProxy("ImuPlugin:ws -h " + ip + " -p " + pose3DProxyPort);
+                       var basepose3D = communicator.stringToProxy("ardrone_pose3d:ws -h " + ip + " -p " + pose3DProxyPort);
                        jderobot.Pose3DPrx.checkedCast(basepose3D).then(
                            function(ar){
                                console.log("pose3DProxy connected: " + ar);

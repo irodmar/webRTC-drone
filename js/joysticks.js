@@ -1,3 +1,13 @@
+/**********************************************
+Código perteneciente al Trabajo Fin de Grado:
+MANEJO DE UN DRONE CON WEBRTC Y JDEROBOT
+
+Autor: Iván Rodríguez-Bobada Martín
+      ivan7688[at]gmail[dot]com
+Tutor: Jose María Cañas Plaza
+      josemaria[dot]plaza[at]gmail[dot]com
+Wiki: http://jderobot.org/Irodmar-tfg
+**********************************************/
 
 
 function oMousePos(canvas, evt) {
@@ -13,8 +23,8 @@ function oMousePos(canvas, evt) {
 function getTouchPos(canvasDom, touchEvent) {
         var rect = canvasDom.getBoundingClientRect();
         return {
-                x: touchEvent.touches[0].clientX - rect.left,
-                y: touchEvent.touches[0].clientY - rect.top
+                x: touchEvent.targetTouches[0].clientX - rect.left,
+                y: touchEvent.targetTouches[0].clientY - rect.top
         };
 }       
         
@@ -93,7 +103,7 @@ function rightJoystick(){
                         x = X + elR * Math.cos(angulo);
                         y = Y + elR * Math.sin(angulo);
 
-                        sendAltYaw(((y - Y)/maxR)*(-1), ((x - X)/maxR));
+                        sendAltYaw(((y - Y)/maxR)*(-1)*velocidad, ((x - X)/maxR)*velocidad);
                         
                         ctx.clearRect(0, 0, cw, ch); // Clear and redraw the joystick
                         dibujarAro(X, Y, RHoop);
@@ -149,7 +159,7 @@ function rightJoystick(){
                 x = X + elR * Math.cos(angulo);
                 y = Y + elR * Math.sin(angulo);
                 
-                sendAltYaw(((y - Y)/maxR)*(-1), ((x - X)/maxR));
+                sendAltYaw(((y - Y)/maxR)*(-1)*velocidad, ((x - X)/maxR)*velocidad);
                 
                 ctx.clearRect(0, 0, cw, ch);
                 dibujarAro(X, Y, RHoop);
@@ -280,7 +290,7 @@ function leftJoystick(){
                         VY = ((x - X)/maxR); // establecemos las velocidades (VY y VX van al reves ya que consuderamos x (avance) el joystick hacia adelante)
                         VX = ((y - Y)/maxR)*(-1);
                         
-                        sendCMDVel(VX,-VY);// Change variables and send the command to the drone
+                        sendCMDVel(VX*velocidad,-VY*velocidad);// Change variables and send the command to the drone
                         //console.log("VX: " + VY);
 
                         
@@ -347,7 +357,7 @@ function leftJoystick(){
                 VY = ((x - X)/maxR); // establecemos las velocidades (VY y VX van al reves ya que consuderamos x (avance) el joystick hacia adelante)
                 VX = ((y - Y)/maxR)*(-1);
                 
-                sendCMDVel(VX,-VY);// Change variables and send the command to the drone
+                sendCMDVel(VX*velocidad,-VY*velocidad);// Change variables and send the command to the drone
 
                 
                 ctx.clearRect(0, 0, cw, ch);
